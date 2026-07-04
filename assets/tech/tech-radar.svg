@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300" width="300" height="300">
+  <defs>
+    <radialGradient id="radarBg" cx="50%" cy="50%"><stop offset="0" stop-color="#F4C430" stop-opacity="0.15"/><stop offset="1" stop-color="#1A1A1A" stop-opacity="0"/></radialGradient>
+    <linearGradient id="sweep" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#F4C430" stop-opacity="0"/><stop offset="1" stop-color="#F4C430" stop-opacity="0.6"/></linearGradient>
+  </defs>
+  <rect width="300" height="300" fill="#1A1A1A"/>
+  <circle cx="150" cy="150" r="120" fill="url(#radarBg)"/>
+  <g stroke="#F4C430" stroke-width="1" fill="none" opacity="0.4">
+    <circle cx="150" cy="150" r="40"/>
+    <circle cx="150" cy="150" r="80"/>
+    <circle cx="150" cy="150" r="120"/>
+    <line x1="30" y1="150" x2="270" y2="150"/>
+    <line x1="150" y1="30" x2="150" y2="270"/>
+  </g>
+  <path d="M150 150 L 270 90 A 134 134 0 0 0 270 150 Z" fill="url(#sweep)"/>
+  <g fill="#FF6B35">
+    <circle cx="180" cy="120" r="3"/>
+    <circle cx="100" cy="180" r="3"/>
+    <circle cx="200" cy="200" r="3"/>
+    <circle cx="80" cy="120" r="2"/>
+  </g>
+  <circle cx="150" cy="150" r="6" fill="#F4C430"/>
+</svg>

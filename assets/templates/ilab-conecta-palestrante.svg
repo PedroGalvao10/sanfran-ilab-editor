@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1350" width="1080" height="1350">
+  <defs>
+    <linearGradient id="g-ao" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#F4C430"/><stop offset="1" stop-color="#FF6B35"/>
+    </linearGradient>
+    <linearGradient id="g-aov" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#F4C430"/><stop offset="1" stop-color="#FF6B35"/>
+    </linearGradient>
+    <linearGradient id="g-or" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#FF6B35"/><stop offset="1" stop-color="#C41E3A"/>
+    </linearGradient>
+    <pattern id="dots-dark" x="0" y="0" width="32" height="32" patternUnits="userSpaceOnUse">
+      <circle cx="16" cy="16" r="1.1" fill="#F4C430" opacity="0.28"/>
+    </pattern>
+    <pattern id="dots-light" x="0" y="0" width="36" height="36" patternUnits="userSpaceOnUse">
+      <circle cx="18" cy="18" r="1.2" fill="#1A1A1A" opacity="0.07"/>
+    </pattern>
+  </defs>
+  <rect width="1080" height="1350" fill="#1A1A1A"/>
+  <rect width="1080" height="1350" fill="url(#dots-dark)"/>
+  <rect x="0" y="0" width="1080" height="8" fill="url(#g-ao)"/>
+
+  <!-- elementos geométricos discretos (globo wire-style) -->
+  <g transform="translate(820 250)" opacity="0.32" stroke="#FF6B35" fill="none">
+    <circle cx="0" cy="0" r="180" stroke-width="1"/>
+    <ellipse cx="0" cy="0" rx="180" ry="60" stroke-width="1"/>
+    <ellipse cx="0" cy="0" rx="180" ry="100" stroke-width="1"/>
+    <ellipse cx="0" cy="0" rx="180" ry="140" stroke-width="1"/>
+    <ellipse cx="0" cy="0" rx="60" ry="180" stroke-width="1"/>
+    <ellipse cx="0" cy="0" rx="100" ry="180" stroke-width="1"/>
+    <ellipse cx="0" cy="0" rx="140" ry="180" stroke-width="1"/>
+  </g>
+
+  <text x="80" y="140" font-family="JetBrains Mono,monospace" font-size="14" font-weight="700" letter-spacing="4" fill="#F4C430">iLAB CONECTA · 2026</text>
+
+  <!-- data em destaque (chip pill) -->
+  <g transform="translate(80 200)">
+    <rect x="0" y="0" width="240" height="46" rx="23" fill="url(#g-ao)"/>
+    <text x="120" y="30" font-family="JetBrains Mono,monospace" font-size="14" font-weight="700" letter-spacing="3" fill="#1A1A1A" text-anchor="middle">12 · ABR · 2026</text>
+  </g>
+
+  <!-- título evento (hero) -->
+  <g font-family="Poppins,sans-serif" font-weight="900" letter-spacing="-3">
+    <text x="80" y="370" font-size="92" fill="#FAF3E0">Direito,</text>
+    <text x="80" y="470" font-size="92" fill="url(#g-ao)">IA e o futuro</text>
+    <text x="80" y="570" font-size="92" fill="#FAF3E0">dos contratos.</text>
+  </g>
+
+  <!-- separador -->
+  <rect x="80" y="640" width="120" height="3" fill="#FF6B35"/>
+
+  <!-- bloco palestrante: foto-placeholder + nome + cargo -->
+  <g transform="translate(80 720)">
+    <rect x="0" y="0" width="180" height="180" rx="14" fill="url(#g-ao)"/>
+    <rect x="0" y="0" width="180" height="180" rx="14" fill="#1A1A1A" opacity="0.18"/>
+    <text x="90" y="105" font-family="Poppins,sans-serif" font-weight="900" font-size="80" fill="#1A1A1A" text-anchor="middle" opacity="0.45">P</text>
+
+    <text x="210" y="50" font-family="JetBrains Mono,monospace" font-size="12" font-weight="700" letter-spacing="3" fill="#FF6B35">PALESTRANTE</text>
+    <text x="210" y="98" font-family="Poppins,sans-serif" font-weight="900" font-size="34" fill="#FAF3E0">Nome do Palestrante</text>
+    <text x="210" y="132" font-family="Montserrat,sans-serif" font-weight="400" font-size="18" fill="#FAF3E0" opacity="0.72">Cargo · Instituição</text>
+    <line x1="210" y1="156" x2="280" y2="156" stroke="#F4C430" stroke-width="2"/>
+    <text x="210" y="180" font-family="JetBrains Mono,monospace" font-size="11" font-weight="700" letter-spacing="3" fill="#F4C430">19H30 · ANFITEATRO IV · FD-USP</text>
+  </g>
+
+  <!-- inscrições -->
+  <g transform="translate(80 980)">
+    <text x="0" y="0" font-family="JetBrains Mono,monospace" font-size="11" font-weight="700" letter-spacing="3" fill="#F4C430">INSCRIÇÕES GRATUITAS</text>
+    <text x="0" y="40" font-family="Poppins,sans-serif" font-weight="900" font-size="28" fill="#FAF3E0">sanfranilab.usp.br/conecta</text>
+  </g>
+
+  <g transform="translate(80 1260)">
+    <text font-family="Poppins,sans-serif" font-weight="900" font-size="28" letter-spacing="-1">
+      <tspan fill="#F4C430">i</tspan><tspan fill="#FAF3E0">Lab</tspan>
+    </text>
+    <text x="0" y="32" font-family="JetBrains Mono,monospace" font-size="11" font-weight="700" letter-spacing="3" fill="#FAF3E0" opacity=".55">SANFRAN · FD-USP</text>
+  </g>
+  <text x="1000" y="1292" font-family="JetBrains Mono,monospace" font-size="12" font-weight="700" letter-spacing="3" fill="#FF6B35" text-anchor="end">@SANFRANILAB</text>
+</svg>

@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1350" width="1080" height="1350">
+  <defs>
+    <linearGradient id="g-ao" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#F4C430"/><stop offset="1" stop-color="#FF6B35"/>
+    </linearGradient>
+    <linearGradient id="g-aov" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#F4C430"/><stop offset="1" stop-color="#FF6B35"/>
+    </linearGradient>
+    <linearGradient id="g-or" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#FF6B35"/><stop offset="1" stop-color="#C41E3A"/>
+    </linearGradient>
+    <pattern id="dots-dark" x="0" y="0" width="32" height="32" patternUnits="userSpaceOnUse">
+      <circle cx="16" cy="16" r="1.1" fill="#F4C430" opacity="0.28"/>
+    </pattern>
+    <pattern id="dots-light" x="0" y="0" width="36" height="36" patternUnits="userSpaceOnUse">
+      <circle cx="18" cy="18" r="1.2" fill="#1A1A1A" opacity="0.07"/>
+    </pattern>
+  </defs>
+  <rect width="1080" height="1350" fill="url(#g-or)"/>
+  <rect x="0" y="0" width="1080" height="8" fill="#1A1A1A"/>
+
+  <!-- estrela decorativa atrás do hero -->
+  <g transform="translate(820 220)" opacity="0.18">
+    <polygon points="0,-120 30,-30 120,-30 45,25 75,115 0,60 -75,115 -45,25 -120,-30 -30,-30" fill="#FAF3E0"/>
+  </g>
+
+  <text x="80" y="140" font-family="JetBrains Mono,monospace" font-size="14" font-weight="700" letter-spacing="4" fill="#1A1A1A">EDITAL Nº 03/2026</text>
+
+  <!-- title -->
+  <g font-family="Poppins,sans-serif" font-weight="900" letter-spacing="-4">
+    <text x="80" y="320" font-size="128" fill="#FAF3E0">Inscrições</text>
+    <text x="80" y="450" font-size="128" fill="#1A1A1A">abertas.</text>
+  </g>
+
+  <!-- linha + lead -->
+  <rect x="80" y="490" width="120" height="3" fill="#1A1A1A"/>
+  <text x="80" y="550" font-family="Montserrat,sans-serif" font-weight="500" font-size="24" fill="#1A1A1A">Programa de imersão em Direito,</text>
+  <text x="80" y="582" font-family="Montserrat,sans-serif" font-weight="500" font-size="24" fill="#1A1A1A">Tecnologia e Inovação · 2º semestre.</text>
+
+  <!-- info card branco (highlight) -->
+  <g transform="translate(80 660)">
+    <rect width="920" height="280" rx="20" fill="#FAF3E0"/>
+    <!-- bloco 1: vagas -->
+    <text x="40" y="60" font-family="JetBrains Mono,monospace" font-size="11" font-weight="700" letter-spacing="3" fill="#C41E3A">VAGAS</text>
+    <text x="40" y="172" font-family="Poppins,sans-serif" font-weight="900" font-size="120" fill="#1A1A1A" letter-spacing="-4">40</text>
+    <text x="40" y="220" font-family="Montserrat,sans-serif" font-weight="500" font-size="18" fill="#1A1A1A" opacity="0.7">alunos selecionados</text>
+    <!-- divider vertical -->
+    <line x1="320" y1="40" x2="320" y2="240" stroke="#1A1A1A" stroke-width="1" opacity="0.15"/>
+    <!-- bloco 2: prazo -->
+    <text x="360" y="60" font-family="JetBrains Mono,monospace" font-size="11" font-weight="700" letter-spacing="3" fill="#C41E3A">PRAZO</text>
+    <text x="360" y="125" font-family="Poppins,sans-serif" font-weight="900" font-size="44" fill="#1A1A1A">até 30 · MAI</text>
+    <text x="360" y="172" font-family="Poppins,sans-serif" font-weight="900" font-size="44" fill="#1A1A1A">2026</text>
+    <line x1="360" y1="190" x2="420" y2="190" stroke="#FF6B35" stroke-width="3"/>
+    <text x="360" y="222" font-family="Montserrat,sans-serif" font-weight="500" font-size="16" fill="#1A1A1A" opacity="0.7">resultado em 15 · jun</text>
+  </g>
+
+  <!-- CTA link -->
+  <g transform="translate(80 990)">
+    <text x="0" y="0" font-family="JetBrains Mono,monospace" font-size="12" font-weight="700" letter-spacing="3" fill="#FAF3E0">INSCREVA-SE EM →</text>
+    <text x="0" y="40" font-family="Poppins,sans-serif" font-weight="900" font-size="32" fill="#FAF3E0">sanfranilab.usp.br/edital</text>
+  </g>
+
+  <g transform="translate(80 1260)">
+    <text font-family="Poppins,sans-serif" font-weight="900" font-size="28" letter-spacing="-1">
+      <tspan fill="#1A1A1A">i</tspan><tspan fill="#FAF3E0">Lab</tspan>
+    </text>
+    <text x="0" y="32" font-family="JetBrains Mono,monospace" font-size="11" font-weight="700" letter-spacing="3" fill="#FAF3E0" opacity=".7">SANFRAN · FD-USP</text>
+  </g>
+  <text x="1000" y="1292" font-family="JetBrains Mono,monospace" font-size="12" font-weight="700" letter-spacing="3" fill="#1A1A1A" text-anchor="end">@SANFRANILAB</text>
+</svg>

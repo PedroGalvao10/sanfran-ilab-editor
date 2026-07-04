@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 300" width="480" height="300">
+  <defs>
+    <filter id="tcg"><feGaussianBlur stdDeviation="2"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  </defs>
+  <rect width="480" height="300" fill="#1A1A1A"/>
+  <g stroke="#F4C430" stroke-width="1.5" fill="none" filter="url(#tcg)">
+    <path d="M40 60 H 120 V 100 H 200 V 60 H 280 V 140 H 360 V 100 H 440"/>
+    <path d="M40 180 H 100 V 220 H 200 V 180 H 320 V 240 H 440"/>
+    <path d="M120 100 V 180"/>
+    <path d="M280 140 V 220"/>
+  </g>
+  <g fill="#FF6B35">
+    <circle cx="40" cy="60" r="4"/><circle cx="120" cy="100" r="5"/>
+    <circle cx="200" cy="60" r="4"/><circle cx="280" cy="140" r="6"/>
+    <circle cx="360" cy="100" r="4"/><circle cx="440" cy="60" r="4"/>
+    <circle cx="100" cy="220" r="5"/><circle cx="200" cy="180" r="4"/>
+    <circle cx="320" cy="240" r="5"/><circle cx="440" cy="240" r="4"/>
+  </g>
+  <g fill="#F4C430" opacity="0.4">
+    <rect x="115" y="95" width="10" height="10"/>
+    <rect x="275" y="135" width="10" height="10"/>
+    <rect x="95" y="215" width="10" height="10"/>
+  </g>
+</svg>

@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1350" width="1080" height="1350">
+  <defs>
+    <linearGradient id="g-ao" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#F4C430"/><stop offset="1" stop-color="#FF6B35"/>
+    </linearGradient>
+    <linearGradient id="g-aov" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#F4C430"/><stop offset="1" stop-color="#FF6B35"/>
+    </linearGradient>
+    <linearGradient id="g-or" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#FF6B35"/><stop offset="1" stop-color="#C41E3A"/>
+    </linearGradient>
+    <pattern id="dots" x="0" y="0" width="28" height="28" patternUnits="userSpaceOnUse">
+      <circle cx="14" cy="14" r="1.1" fill="#F4C430" opacity="0.32"/>
+    </pattern>
+    <pattern id="grid-l" x="0" y="0" width="60" height="60" patternUnits="userSpaceOnUse">
+      <path d="M60 0H0V60" stroke="#1A1A1A" stroke-width="1" fill="none" opacity="0.06"/>
+    </pattern>
+  </defs>
+  <rect width="1080" height="1350" fill="#1A1A1A"/>
+  <rect x="0" y="0" width="1080" height="10" fill="url(#g-ao)"/>
+  <text x="80" y="140" font-family="JetBrains Mono,monospace" font-size="20" font-weight="700" letter-spacing="6" fill="#F4C430">CARD 07 · OS SQUADS</text>
+  <text x="80" y="240" font-family="Poppins,sans-serif" font-weight="900" font-size="78" fill="#FAF3E0" letter-spacing="-2">Times multidisciplinares,</text>
+  <text x="80" y="320" font-family="Poppins,sans-serif" font-weight="900" font-size="78" fill="url(#g-ao)" letter-spacing="-2">missões reais.</text>
+  <!-- 3 squads side by side -->
+  <g transform="translate(80 420)">
+    <g>
+      <rect x="0" y="0" width="290" height="380" fill="#FAF3E0" rx="14"/>
+      <rect x="0" y="0" width="290" height="80" fill="url(#g-ao)" rx="14"/>
+      <rect x="0" y="60" width="290" height="20" fill="url(#g-ao)"/>
+      <text x="20" y="50" font-family="JetBrains Mono,monospace" font-size="12" font-weight="700" letter-spacing="3" fill="#1A1A1A">SQUAD · LEGAL AI</text>
+      <text x="20" y="140" font-family="Poppins,sans-serif" font-weight="900" font-size="38" fill="#1A1A1A">α</text>
+      <text x="20" y="190" font-family="Poppins,sans-serif" font-weight="900" font-size="24" fill="#1A1A1A">Alpha</text>
+      <text x="20" y="230" font-family="Montserrat,sans-serif" font-size="16" fill="#1A1A1A" opacity="0.72">Modelos jurídicos próprios,</text>
+      <text x="20" y="252" font-family="Montserrat,sans-serif" font-size="16" fill="#1A1A1A" opacity="0.72">RAG, agentes legais.</text>
+      <rect x="20" y="300" width="60" height="3" fill="#C41E3A"/>
+      <text x="20" y="335" font-family="JetBrains Mono,monospace" font-size="11" font-weight="700" letter-spacing="2" fill="#C41E3A">12 membros</text>
+    </g>
+    <g transform="translate(315 0)">
+      <rect x="0" y="0" width="290" height="380" fill="#FAF3E0" rx="14"/>
+      <rect x="0" y="0" width="290" height="80" fill="url(#g-or)" rx="14"/>
+      <rect x="0" y="60" width="290" height="20" fill="url(#g-or)"/>
+      <text x="20" y="50" font-family="JetBrains Mono,monospace" font-size="12" font-weight="700" letter-spacing="3" fill="#FAF3E0">SQUAD · LEGAL DESIGN</text>
+      <text x="20" y="140" font-family="Poppins,sans-serif" font-weight="900" font-size="38" fill="#1A1A1A">β</text>
+      <text x="20" y="190" font-family="Poppins,sans-serif" font-weight="900" font-size="24" fill="#1A1A1A">Beta</text>
+      <text x="20" y="230" font-family="Montserrat,sans-serif" font-size="16" fill="#1A1A1A" opacity="0.72">Contratos visuais,</text>
+      <text x="20" y="252" font-family="Montserrat,sans-serif" font-size="16" fill="#1A1A1A" opacity="0.72">decisões navegáveis, UX legal.</text>
+      <rect x="20" y="300" width="60" height="3" fill="#FF6B35"/>
+      <text x="20" y="335" font-family="JetBrains Mono,monospace" font-size="11" font-weight="700" letter-spacing="2" fill="#FF6B35">9 membros</text>
+    </g>
+    <g transform="translate(630 0)">
+      <rect x="0" y="0" width="290" height="380" fill="#FAF3E0" rx="14"/>
+      <rect x="0" y="0" width="290" height="80" fill="#C41E3A" rx="14"/>
+      <rect x="0" y="60" width="290" height="20" fill="#C41E3A"/>
+      <text x="20" y="50" font-family="JetBrains Mono,monospace" font-size="12" font-weight="700" letter-spacing="3" fill="#FAF3E0">SQUAD · LAWTECH</text>
+      <text x="20" y="140" font-family="Poppins,sans-serif" font-weight="900" font-size="38" fill="#1A1A1A">γ</text>
+      <text x="20" y="190" font-family="Poppins,sans-serif" font-weight="900" font-size="24" fill="#1A1A1A">Gamma</text>
+      <text x="20" y="230" font-family="Montserrat,sans-serif" font-size="16" fill="#1A1A1A" opacity="0.72">Aceleração de startups,</text>
+      <text x="20" y="252" font-family="Montserrat,sans-serif" font-size="16" fill="#1A1A1A" opacity="0.72">conexão com investidores.</text>
+      <rect x="20" y="300" width="60" height="3" fill="#F4C430"/>
+      <text x="20" y="335" font-family="JetBrains Mono,monospace" font-size="11" font-weight="700" letter-spacing="2" fill="#F4C430">7 membros</text>
+    </g>
+  </g>
+  <g transform="translate(80 870)">
+    <rect x="0" y="0" width="920" height="180" fill="#0F0F0F" rx="14" stroke="#F4C430" stroke-opacity="0.2"/>
+    <text x="40" y="60" font-family="JetBrains Mono,monospace" font-size="12" font-weight="700" letter-spacing="3" fill="#F4C430">CADA SQUAD ENTREGA</text>
+    <text x="40" y="110" font-family="Poppins,sans-serif" font-weight="900" font-size="32" fill="#FAF3E0">→ Um projeto real por semestre,</text>
+    <text x="40" y="150" font-family="Poppins,sans-serif" font-weight="900" font-size="32" fill="url(#g-ao)">com cliente externo de verdade.</text>
+  </g>
+  <text x="80" y="1280" font-family="Poppins,sans-serif" font-weight="900" font-size="30" fill="#F4C430">iLab<tspan fill="#FAF3E0" font-size="16" font-weight="400" dx="10">SANFRAN · FD-USP</tspan></text>
+</svg>

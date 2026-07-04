@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SanFran iLab — Editor Estilo Figma</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800;900&family=Montserrat:wght@400;500;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --yellow: #F4C430;
+      --orange: #FF6B35;
+      --red: #C41E3A;
+      --black-deep: #111111;
+      --black-card: #1e1e1e;
+      --warm-white: #FAF3E0;
+      --gray: #777777;
+      --white: #FFFFFF;
+      --figma-blue: #18A0FB;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      user-select: none;
+    }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: var(--black-deep);
+      color: var(--warm-white);
+      height: 100vh;
+      display: flex;
+      overflow: hidden;
+    }
+
+    /* BARRA LATERAL (INSPECTOR ESTILO FIGMA) */
+    .sidebar {
+      width: 360px;
+      background: var(--black-card);
+      border-right: 1px solid #333;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      flex-shrink: 0;
+      z-index: 10;
+    }
+
+    .sidebar-header {
+      padding: 20px;
+      border-bottom: 1px solid #333;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .sidebar-title {
+      font-family: 'Poppins', sans-serif;
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing: 1px;
+    }
+
+    .sidebar-title span {
+      color: var(--figma-blue);
+    }
+
+    .inspector-panel {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .section-title {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--gray);
+      margin-bottom: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .figma-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .figma-field {
+      background: #151515;
+      border: 1px solid #333;
+      border-radius: 4px;
+      padding: 6px 10px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .figma-field label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: #555;
+    }
+
+    .figma-field input {
+      background: transparent;
+      border: none;
+      color: var(--white);
+      font-size: 12px;
+      width: 100%;
+      outline: none;
+    }
+
+    .figma-btn {
+      width: 100%;
+      background: #252525;
+      border: 1px solid #444;
+      color: var(--white);
+      padding: 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-family: 'Poppins', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      transition: all 0.2s;
+      margin-bottom: 8px;
+    }
+
+    .figma-btn:hover {
+      background: #333;
+      border-color: var(--figma-blue);
+    }
+
+    /* CONTAINER DE TRABALHO */
+    .workspace {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      background: #0f0f0f;
+      position: relative;
+    }
+
+    /* FIGMA TOOLBAR */
+    .toolbar {
+      height: 48px;
+      background: #1e1e1e;
+      border-bottom: 1px solid #333;
+      display: flex;
+      align-items: center;
+      padding: 0 20px;
+      gap: 20px;
+    }
+
+    .tool-btn {
+      background: none;
+      border: none;
+      color: #999;
+      font-family: 'Poppins', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      padding: 6px 12px;
+      border-radius: 4px;
+      transition: all 0.2s;
+    }
+
+    .tool-btn.active, .tool-btn:hover {
+      color: var(--white);
+      background: #2b2b2b;
+    }
+
+    .tool-btn.active {
+      box-shadow: inset 0 0 0 1px var(--figma-blue);
+    }
+
+    /* CANVAS DE RENDER */
+    .canvas-container {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px;
+    }
+
+    .figma-canvas {
+      width: 700px;
+      height: 700px;
+      background: var(--black-deep);
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 30px 100px rgba(0,0,0,0.8);
+    }
+
+    /* ELEMENTOS EDITÁVEIS DENTRO DA TELA */
+    .figma-element {
+      position: absolute;
+      cursor: move;
+      outline: 1.5px dashed transparent;
+      transition: outline-color 0.15s;
+    }
+
+    .figma-element:hover {
+      outline-color: rgba(24, 160, 251, 0.4);
+    }
+
+    .figma-element.selected {
+      outline: 1.5px solid var(--figma-blue);
+    }
+
+    /* ALÇAS DE DIMENSIONAMENTO ESTILO FIGMA */
+    .figma-element.selected::after {
+      content: '';
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      background: var(--white);
+      border: 1.5px solid var(--figma-blue);
+      bottom: -4px;
+      right: -4px;
+      cursor: se-resize;
+      z-index: 10;
+    }
+
+    /* TEXTO EDITÁVEL DIRETAMENTE */
+    .editable-text {
+      outline: none;
+      cursor: text;
+    }
+
+    /* RENDER DO CARROSSEL */
+    .slide-layer {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: none;
+      background: var(--black-deep);
+      padding: 50px;
+    }
+
+    .slide-layer.active {
+      display: block;
+    }
+
+    /* ELEMENTOS COM DESIGN PREMIUM */
+    .badge-wrap {
+      left: 50px;
+      top: 50px;
+    }
+
+    .badge-category {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 6px 16px;
+      border-radius: 20px;
+      color: var(--black-deep);
+      background: linear-gradient(90deg, var(--yellow), var(--orange));
+    }
+
+    .headline-wrap {
+      left: 50px;
+      top: 240px;
+      width: 600px;
+    }
+
+    .slide-title {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 900;
+      font-size: 54px;
+      line-height: 1.1;
+      letter-spacing: -2px;
+      color: var(--white);
+    }
+
+    .slide-title span {
+      background: linear-gradient(90deg, var(--yellow), var(--orange));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .desc-wrap {
+      left: 50px;
+      top: 600px;
+      width: 500px;
+    }
+
+    .slide-desc {
+      font-size: 20px;
+      line-height: 1.5;
+      color: var(--warm-white);
+      opacity: 0.85;
+    }
+
+    .lex-wrap {
+      right: 20px;
+      bottom: 60px;
+      width: 280px;
+      height: 280px;
+    }
+
+    .lex-image {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      pointer-events: none;
+    }
+
+    .footer-wrap {
+      left: 50px;
+      bottom: 50px;
+      width: 600px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      pointer-events: none;
+    }
+
+    .logo-footer {
+      height: 36px;
+      width: auto;
+      opacity: 0.85;
+    }
+
+    .page-indicator {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 15px;
+      color: var(--gray);
+      font-weight: 700;
+    }
+
+    .card-wrap {
+      left: 50px;
+      top: 450px;
+      width: 600px;
+    }
+
+    .glass-card {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1.5px solid rgba(244, 196, 48, 0.2);
+      border-radius: 16px;
+      padding: 24px;
+      display: flex;
+      gap: 24px;
+      align-items: center;
+    }
+
+    .glass-number {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 900;
+      font-size: 48px;
+      letter-spacing: -1px;
+      background: linear-gradient(90deg, var(--yellow), var(--orange));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .glass-text {
+      font-size: 16px;
+      line-height: 1.4;
+      color: var(--warm-white);
+      opacity: 0.8;
+    }
+
+    .button-wrap {
+      left: 50px;
+      top: 660px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(90deg, var(--yellow), var(--orange));
+      color: var(--black-deep);
+      border: none;
+      font-family: 'Poppins', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      padding: 16px 36px;
+      border-radius: 30px;
+      cursor: pointer;
+    }
+
+    /* TOAST */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: #2E7D32;
+      color: white;
+      padding: 16px 24px;
+      border-radius: 8px;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 700;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 100;
+    }
+
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- BARRA LATERAL (FIGMA INSPECTOR) -->
+  <div class="sidebar">
+    <div class="sidebar-header">
+      <a href="index.html">← Voltar</a>
+      <div class="sidebar-title">Figma <span>iLab</span></div>
+    </div>
+
+    <div class="inspector-panel">
+      <!-- POSICIONADOR GEOMÉTRICO -->
+      <div>
+        <div class="section-title">Posição & Dimensão</div>
+        <div class="figma-row">
+          <div class="figma-field">
+            <label>X</label>
+            <input type="text" id="field-x" readonly>
+          </div>
+          <div class="figma-field">
+            <label>Y</label>
+            <input type="text" id="field-y" readonly>
+          </div>
+        </div>
+        <div class="figma-row">
+          <div class="figma-field">
+            <label>W</label>
+            <input type="text" id="field-w" readonly>
+          </div>
+          <div class="figma-field">
+            <label>H</label>
+            <input type="text" id="field-h" readonly>
+          </div>
+        </div>
+      </div>
+
+      <!-- INSTRUÇÃO DE DESIGN -->
+      <div>
+        <div class="section-title">Controle do Editor</div>
+        <button class="figma-btn" onclick="resetPositions()">Resetar Posições</button>
+        <p style="font-size: 11px; color: var(--gray); line-height: 1.4;">
+          * Clique em qualquer elemento para selecionar.<br>
+          * Arraste para mover.<br>
+          * Puxe o quadrado no canto inferior direito para redimensionar.<br>
+          * Dê dois cliques no texto para editar diretamente!
+        </p>
+      </div>
+
+      <!-- EXPORTAÇÃO -->
+      <div style="margin-top: auto;">
+        <div class="section-title">Exportar Design</div>
+        <button class="figma-btn" onclick="exportSVG()" style="background: var(--figma-blue); border: none; color: black;">Baixar Vetor SVG</button>
+        <button class="figma-btn" onclick="exportPNG()" style="background: var(--yellow); border: none; color: black;">Baixar Imagem PNG</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- WORKSPACE -->
+  <div class="workspace">
+    <!-- TOOLBAR -->
+    <div class="toolbar">
+      <button class="tool-btn active" id="btn-slide-1" onclick="changeSlide(1)">Slide 1 (Capa)</button>
+      <button class="tool-btn" id="btn-slide-2" onclick="changeSlide(2)">Slide 2 (Métricas)</button>
+      <button class="tool-btn" id="btn-slide-3" onclick="changeSlide(3)">Slide 3 (CTA)</button>
+    </div>
+
+    <!-- CANVAS -->
+    <div class="canvas-container">
+      <div class="figma-canvas" id="capture-area">
+        
+        <!-- SLIDE 1 -->
+        <div class="slide-layer active" id="layer-1">
+          <!-- Textura hex -->
+          <svg class="circuit-bg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none">
+            <pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse">
+              <path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(244,196,48,0.06)" stroke-width="0.5"/>
+            </pattern>
+            <rect width="100%" height="100%" fill="url(#grid)" />
+          </svg>
+
+          <div class="figma-element badge-wrap" id="s1-badge">
+            <span class="badge-category editable-text" contenteditable="true">⚖ TECH & DIREITO</span>
+          </div>
+
+          <div class="figma-element headline-wrap" id="s1-headline">
+            <h1 class="slide-title editable-text" contenteditable="true">
+              Quando o<br>
+              <span>código fonte</span><br>
+              vira lei.
+            </h1>
+          </div>
+
+          <div class="figma-element desc-wrap" id="s1-desc">
+            <p class="slide-desc editable-text" contenteditable="true">A ascensão da automação algorítmica nos tribunais brasileiros.</p>
+          </div>
+
+          <div class="figma-element lex-wrap" id="s1-lex">
+            <img class="lex-image" src="assets/lex/ideia-brilhante.png" alt="Lex">
+          </div>
+
+          <div class="footer-wrap">
+            <img class="logo-footer" src="assets/logo-provisoria.png" alt="Logo">
+            <span class="page-indicator">01/03</span>
+          </div>
+        </div>
+
+        <!-- SLIDE 2 -->
+        <div class="slide-layer" id="layer-2">
+          <!-- Textura ondulada -->
+          <svg class="circuit-bg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none">
+            <path d="M0,50 Q25,25 50,50 T100,50" fill="none" stroke="rgba(255, 107, 53, 0.08)" stroke-width="1"/>
+          </svg>
+
+          <div class="figma-element badge-wrap" id="s2-badge">
+            <span class="badge-category editable-text" style="background: rgba(255,107,53,0.15); border: 1px solid var(--orange); color: var(--orange)" contenteditable="true">ANÁLISE</span>
+          </div>
+
+          <div class="figma-element headline-wrap" id="s2-headline" style="top: 130px;">
+            <h2 class="slide-title editable-text" style="font-size: 46px;" contenteditable="true">O Risco Preditivo</h2>
+          </div>
+
+          <div class="figma-element desc-wrap" id="s2-desc" style="top: 210px; width: 600px;">
+            <p class="slide-desc editable-text" style="font-size: 16px;" contenteditable="true">Sistemas judiciais automatizados baseados em IA podem perpetuar vieses históricos.</p>
+          </div>
+
+          <div class="figma-element card-wrap" id="s2-card">
+            <div class="glass-card">
+              <div class="glass-number editable-text" contenteditable="true">87%</div>
+              <div class="glass-text editable-text" contenteditable="true">de correlação entre predições automatizadas e precedentes com vieses históricos.</div>
+            </div>
+          </div>
+
+          <div class="footer-wrap">
+            <img class="logo-footer" src="assets/logo-provisoria.png" alt="Logo">
+            <span class="page-indicator">02/03</span>
+          </div>
+        </div>
+
+        <!-- SLIDE 3 -->
+        <div class="slide-layer" id="layer-3">
+          <div style="position: absolute; width: 200px; height: 200px; border-radius: 50%; background: var(--orange); filter: blur(80px); opacity: 0.15; top: 20%; right: 10%; pointer-events: none;"></div>
+
+          <div class="figma-element badge-wrap" id="s3-badge">
+            <span class="badge-category editable-text" style="background: rgba(196,30,58,0.15); border: 1px solid var(--red); color: var(--red)" contenteditable="true">CONVITE</span>
+          </div>
+
+          <div class="figma-element headline-wrap" id="s3-headline" style="top: 130px;">
+            <h2 class="slide-title editable-text" style="font-size: 44px; line-height: 1.2;" contenteditable="true">
+              Prepare-se para a<br>
+              <span>Advocacia 5.0</span>
+            </h2>
+          </div>
+
+          <div class="figma-element desc-wrap" id="s3-desc" style="top: 260px; width: 600px;">
+            <p class="slide-desc editable-text" style="font-size: 16px;" contenteditable="true">Descubra como o SanFran iLab constrói o futuro das profissões jurídicas.</p>
+          </div>
+
+          <div class="figma-element button-wrap" id="s3-button">
+            <button class="btn-primary editable-text" contenteditable="true">ACESSE O RELATÓRIO →</button>
+          </div>
+
+          <div class="figma-element lex-wrap" id="s3-lex" style="right: 20px; bottom: 80px;">
+            <img class="lex-image" src="assets/lex/pesquisa.png" alt="Lex">
+          </div>
+
+          <div class="footer-wrap">
+            <img class="logo-footer" src="assets/logo-provisoria.png" alt="Logo">
+            <span class="page-indicator">03/03</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast">Sucesso!</div>
+
+  <script>
+    let activeSlide = 1;
+    let selectedElement = null;
+    let isDragging = false;
+    let isResizing = false;
+    let startX, startY, startLeft, startTop, startWidth, startHeight;
+
+    // Mapeamento de posições iniciais para reset
+    const defaultPositions = {};
+
+    document.querySelectorAll('.figma-element').forEach(el => {
+      defaultPositions[el.id] = {
+        left: el.style.left || getComputedStyle(el).left,
+        top: el.style.top || getComputedStyle(el).top,
+        width: el.style.width || getComputedStyle(el).width,
+        height: el.style.height || getComputedStyle(el).height
+      };
+      
+      setupElementEvents(el);
+    });
+
+    function setupElementEvents(el) {
+      el.addEventListener('mousedown', (e) => {
+        // Ignora clique se for dentro de texto editando
+        if (e.target.contentEditable === 'true' && document.activeElement === e.target) return;
+
+        selectElement(el);
+
+        const isHandle = e.offsetX > el.offsetWidth - 12 && e.offsetY > el.offsetHeight - 12;
+
+        startX = e.clientX;
+        startY = e.clientY;
+        startLeft = el.offsetLeft;
+        startTop = el.offsetTop;
+        startWidth = el.offsetWidth;
+        startHeight = el.offsetHeight;
+
+        if (isHandle) {
+          isResizing = true;
+        } else {
+          isDragging = true;
+        }
+
+        document.addEventListener('mousemove', onMouseMove);
+        document.addEventListener('mouseup', onMouseUp);
+        e.preventDefault();
+      });
+    }
+
+    function selectElement(el) {
+      if (selectedElement) selectedElement.classList.remove('selected');
+      selectedElement = el;
+      selectedElement.classList.add('selected');
+      updateInspector();
+    }
+
+    function deselectAll() {
+      if (selectedElement) selectedElement.classList.remove('selected');
+      selectedElement = null;
+      updateInspector();
+    }
+
+    // Deselecionar ao clicar no canvas de fundo
+    document.getElementById('capture-area').addEventListener('mousedown', (e) => {
+      if (e.target === document.getElementById('capture-area') || e.target.classList.contains('slide-layer')) {
+        deselectAll();
+      }
+    });
+
+    function onMouseMove(e) {
+      if (!selectedElement) return;
+
+      const dx = e.clientX - startX;
+      const dy = e.clientY - startY;
+
+      if (isDragging) {
+        selectedElement.style.left = `${startLeft + dx}px`;
+        selectedElement.style.top = `${startTop + dy}px`;
+      } else if (isResizing) {
+        selectedElement.style.width = `${startWidth + dx}px`;
+        selectedElement.style.height = `${startHeight + dy}px`;
+      }
+
+      updateInspector();
+    }
+
+    function onMouseUp() {
+      isDragging = false;
+      isResizing = false;
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup', onMouseUp);
+    }
+
+    function updateInspector() {
+      if (!selectedElement) {
+        document.getElementById('field-x').value = '';
+        document.getElementById('field-y').value = '';
+        document.getElementById('field-w').value = '';
+        document.getElementById('field-h').value = '';
+        return;
+      }
+      document.getElementById('field-x').value = `${selectedElement.offsetLeft}px`;
+      document.getElementById('field-y').value = `${selectedElement.offsetTop}px`;
+      document.getElementById('field-w').value = `${selectedElement.offsetWidth}px`;
+      document.getElementById('field-h').value = `${selectedElement.offsetHeight}px`;
+    }
+
+    function resetPositions() {
+      document.querySelectorAll('.figma-element').forEach(el => {
+        const def = defaultPositions[el.id];
+        el.style.left = def.left;
+        el.style.top = def.top;
+        el.style.width = def.width;
+        el.style.height = def.height;
+      });
+      updateInspector();
+      showToast('Posições resetadas!');
+    }
+
+    function changeSlide(num) {
+      document.getElementById(`layer-${activeSlide}`).classList.remove('active');
+      document.getElementById(`btn-slide-${activeSlide}`).classList.remove('active');
+      
+      activeSlide = num;
+      
+      document.getElementById(`layer-${activeSlide}`).classList.add('active');
+      document.getElementById(`btn-slide-${activeSlide}`).classList.add('active');
+      deselectAll();
+    }
+
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      toast.innerText = message;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 3000);
+    }
+
+    async function getBase64FromUrl(url) {
+      try {
+        const response = await fetch(url);
+        const blob = await response.blob();
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onloadend = () => resolve(reader.result);
+          reader.onerror = reject;
+          reader.readAsDataURL(blob);
+        });
+      } catch (e) {
+        return '';
+      }
+    }
+
+    // ═══ EXPORTADOR DE SVG COM PROPORÇÃO DE FIGMA (700px -> 1080px) ═══
+    async function generateSVGString() {
+      const logoB64 = await getBase64FromUrl('assets/logo-provisoria.png');
+      const lexB64 = activeSlide === 1 
+        ? await getBase64FromUrl('assets/lex/ideia-brilhante.png')
+        : await getBase64FromUrl('assets/lex/pesquisa.png');
+
+      const colors = {
+        blackDeep: '#111111',
+        yellow: '#F4C430',
+        orange: '#FF6B35',
+        red: '#C41E3A',
+        warmWhite: '#FAF3E0',
+        gray: '#777777',
+        white: '#FFFFFF'
+      };
+
+      // Fator de escala (o canvas tem 700px e o SVG final tem 1080px)
+      const scale = 1080 / 700;
+
+      function getSvgPos(elId) {
+        const el = document.getElementById(elId);
+        return {
+          x: Math.round(el.offsetLeft * scale),
+          y: Math.round(el.offsetTop * scale),
+          w: Math.round(el.offsetWidth * scale),
+          h: Math.round(el.offsetHeight * scale)
+        };
+      }
+
+      let slideContent = '';
+
+      if (activeSlide === 1) {
+        const badge = getSvgPos('s1-badge');
+        const headline = getSvgPos('s1-headline');
+        const desc = getSvgPos('s1-desc');
+        const lex = getSvgPos('s1-lex');
+
+        // Formata quebra de linhas do HTML no SVG
+        const headlineHtml = document.querySelector('#s1-headline h1').innerHTML;
+        const lines = headlineHtml.split(/<br\s*\/?>/i);
+        let tspanLines = '';
+        lines.forEach((line, idx) => {
+          // Extrai se há tag span de cor dentro
+          const cleanLine = line.replace(/<[^>]*>/g, '').trim();
+          const hasSpan = line.toLowerCase().includes('<span');
+          const fill = hasSpan ? 'url(#gradBrand)' : colors.white;
+          tspanLines += `<tspan x="${headline.x}" dy="${idx === 0 ? 0 : 100}" fill="${fill}">${cleanLine}</tspan>`;
+        });
+
+        slideContent = `
+          <!-- Hex Grid -->
+          <g opacity="0.15">
+            <pattern id="grid-pattern" width="40" height="40" patternUnits="userSpaceOnUse">
+              <path d="M 40 0 L 0 0 0 40" fill="none" stroke="${colors.yellow}" stroke-width="1"/>
+            </pattern>
+            <rect width="1080" height="1080" fill="url(#grid-pattern)" />
+          </g>
+
+          <!-- Badge -->
+          <rect x="${badge.x}" y="${badge.y}" width="${badge.w}" height="${badge.h}" rx="${Math.round(badge.h / 2)}" fill="url(#gradBrand)"/>
+          <text x="${Math.round(badge.x + badge.w / 2)}" y="${Math.round(badge.y + badge.h / 2 + 10)}" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="20" font-weight="700" letter-spacing="3" fill="#111111" text-transform="uppercase">${document.querySelector('#s1-badge span').innerText}</text>
+
+          <!-- Headline -->
+          <text x="${headline.x}" y="${headline.y + 70}" font-family="Poppins, sans-serif" font-size="90" font-weight="900" letter-spacing="-3">
+            ${tspanLines}
+          </text>
+
+          <!-- Descrição -->
+          <text x="${desc.x}" y="${desc.y + 30}" font-family="Montserrat, sans-serif" font-size="34" font-weight="400" fill="${colors.warmWhite}" opacity="0.85">${document.querySelector('#s1-desc p').innerText}</text>
+
+          <!-- Mascote Lex -->
+          <image href="${lexB64}" x="${lex.x}" y="${lex.y}" width="${lex.w}" height="${lex.h}" preserveAspectRatio="xMidYMid meet" opacity="0.95"/>
+        `;
+      } else if (activeSlide === 2) {
+        const badge = getSvgPos('s2-badge');
+        const headline = getSvgPos('s2-headline');
+        const desc = getSvgPos('s2-desc');
+        const card = getSvgPos('s2-card');
+
+        slideContent = `
+          <path d="M 0 500 Q 250 250 540 540 T 1080 500" fill="none" stroke="${colors.orange}" stroke-width="2" opacity="0.1"/>
+
+          <!-- Badge -->
+          <rect x="${badge.x}" y="${badge.y}" width="${badge.w}" height="${badge.h}" rx="${Math.round(badge.h / 2)}" fill="${colors.orange}" fill-opacity="0.15" stroke="${colors.orange}" stroke-width="1.5"/>
+          <text x="${Math.round(badge.x + badge.w / 2)}" y="${Math.round(badge.y + badge.h / 2 + 8)}" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="16" font-weight="700" letter-spacing="2" fill="${colors.orange}">ANÁLISE</text>
+
+          <!-- Título -->
+          <text x="${headline.x}" y="${headline.y + 60}" font-family="Poppins, sans-serif" font-size="72" font-weight="800" fill="url(#gradBrand)" letter-spacing="-2">${document.querySelector('#s2-headline h2').innerText}</text>
+
+          <!-- Descrição -->
+          <text x="${desc.x}" y="${desc.y + 30}" font-family="Montserrat, sans-serif" font-size="32" font-weight="400" fill="${colors.warmWhite}" opacity="0.85">${document.querySelector('#s2-desc p').innerText}</text>
+
+          <!-- Card Glassmorphism -->
+          <rect x="${card.x}" y="${card.y}" width="${card.w}" height="${card.h}" rx="24" fill="${colors.white}" fill-opacity="0.04" stroke="${colors.yellow}" stroke-opacity="0.2" stroke-width="1.5"/>
+          <text x="${card.x + 60}" y="${card.y + 140}" font-family="Poppins, sans-serif" font-size="80" font-weight="900" fill="url(#gradBrand)" letter-spacing="-2">${document.querySelector('#s2-card .glass-number').innerText}</text>
+          <text x="${card.x + 350}" y="${card.y + 100}" font-family="Montserrat, sans-serif" font-size="28" font-weight="500" fill="${colors.warmWhite}" opacity="0.8">${document.querySelector('#s2-card .glass-text').innerText}</text>
+        `;
+      } else if (activeSlide === 3) {
+        const badge = getSvgPos('s3-badge');
+        const headline = getSvgPos('s3-headline');
+        const desc = getSvgPos('s3-desc');
+        const button = getSvgPos('s3-button');
+        const lex = getSvgPos('s3-lex');
+
+        const headlineHtml = document.querySelector('#s3-headline h2').innerHTML;
+        const lines = headlineHtml.split(/<br\s*\/?>/i);
+        let tspanLines = '';
+        lines.forEach((line, idx) => {
+          const cleanLine = line.replace(/<[^>]*>/g, '').trim();
+          const hasSpan = line.toLowerCase().includes('<span');
+          const fill = hasSpan ? 'url(#gradBrand)' : colors.white;
+          tspanLines += `<tspan x="${headline.x}" dy="${idx === 0 ? 0 : 80}" fill="${fill}">${cleanLine}</tspan>`;
+        });
+
+        slideContent = `
+          <circle cx="800" cy="500" r="400" fill="${colors.yellow}" opacity="0.05" filter="url(#blur20)"/>
+
+          <!-- Badge -->
+          <rect x="${badge.x}" y="${badge.y}" width="${badge.w}" height="${badge.h}" rx="${Math.round(badge.h / 2)}" fill="${colors.red}" fill-opacity="0.15" stroke="${colors.red}" stroke-width="1.5"/>
+          <text x="${Math.round(badge.x + badge.w / 2)}" y="${Math.round(badge.y + badge.h / 2 + 8)}" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="16" font-weight="700" letter-spacing="2" fill="${colors.red}">CONVITE</text>
+
+          <!-- Título -->
+          <text x="${headline.x}" y="${headline.y + 60}" font-family="Poppins, sans-serif" font-size="76" font-weight="900" letter-spacing="-3">
+            ${tspanLines}
+          </text>
+
+          <!-- Descrição -->
+          <text x="${desc.x}" y="${desc.y + 30}" font-family="Montserrat, sans-serif" font-size="30" font-weight="400" fill="${colors.warmWhite}" opacity="0.85">${document.querySelector('#s3-desc p').innerText}</text>
+
+          <!-- Botão CTA -->
+          <rect x="${button.x}" y="${button.y}" width="${button.w}" height="${button.h}" rx="${Math.round(button.h / 2)}" fill="url(#gradBrand)"/>
+          <text x="${Math.round(button.x + button.w / 2)}" y="${Math.round(button.y + button.h / 2 + 10)}" text-anchor="middle" font-family="Poppins, sans-serif" font-size="28" font-weight="700" fill="${colors.blackDeep}" letter-spacing="1">${document.querySelector('#s3-button button').innerText}</text>
+
+          <!-- Mascote Lex -->
+          <image href="${lexB64}" x="${lex.x}" y="${lex.y}" width="${lex.w}" height="${lex.h}" preserveAspectRatio="xMidYMid meet" opacity="0.95"/>
+        `;
+      }
+
+      return `<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1080 1080" width="1080" height="1080">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800;900&amp;family=Montserrat:wght@400;500;700&amp;family=JetBrains+Mono:wght@400;700&amp;display=swap');
+    </style>
+    <linearGradient id="gradBrand" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="${colors.yellow}"/>
+      <stop offset="100%" stop-color="${colors.orange}"/>
+    </linearGradient>
+    <linearGradient id="gradFull" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="${colors.yellow}"/>
+      <stop offset="50%" stop-color="${colors.orange}"/>
+      <stop offset="100%" stop-color="${colors.red}"/>
+    </linearGradient>
+    <filter id="blur20">
+      <feGaussianBlur stdDeviation="20"/>
+    </filter>
+  </defs>
+
+  <g>
+    <rect width="1080" height="1080" fill="${colors.blackDeep}"/>
+    ${slideContent}
+
+    <!-- Footer global -->
+    <rect x="80" y="980" width="920" height="2" fill="url(#gradFull)" opacity="0.3"/>
+    <image href="${logoB64}" x="80" y="1005" width="300" height="55" preserveAspectRatio="xMidYMid meet" opacity="0.85"/>
+    <text x="1000" y="1045" text-anchor="end" font-family="JetBrains Mono, monospace" font-size="24" font-weight="700" letter-spacing="2" fill="${colors.gray}">0${activeSlide}/03</text>
+  </g>
+</svg>`;
+    }
+
+    async function exportSVG() {
+      showToast('Calculando coordenadas Figma e gerando SVG...');
+      const svgStr = await generateSVGString();
+      const blob = new Blob([svgStr], { type: 'image/svg+xml;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `ilab-figma-slide-0${activeSlide}.svg`;
+      link.click();
+      
+      URL.revokeObjectURL(url);
+      showToast('✓ Vetor SVG exportado!');
+    }
+
+    async function exportPNG() {
+      showToast('Compilando layout vetorial para PNG 1080px...');
+      const svgStr = await generateSVGString();
+      
+      const canvas = document.createElement('canvas');
+      canvas.width = 1080;
+      canvas.height = 1080;
+      const ctx = canvas.getContext('2d');
+
+      const img = new Image();
+      const svgBlob = new Blob([svgStr], { type: 'image/svg+xml;charset=utf-8' });
+      const url = URL.createObjectURL(svgBlob);
+
+      img.onload = function() {
+        ctx.drawImage(img, 0, 0);
+        canvas.toBlob(function(blob) {
+          const pngUrl = URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.href = pngUrl;
+          link.download = `ilab-figma-slide-0${activeSlide}.png`;
+          link.click();
+          URL.revokeObjectURL(pngUrl);
+          showToast('✓ Imagem PNG baixada!');
+        }, 'image/png');
+        URL.revokeObjectURL(url);
+      };
+
+      img.src = url;
+    }
+  </script>
+</body>
+</html>

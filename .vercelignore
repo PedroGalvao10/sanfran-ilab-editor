@@ -1,0 +1,22 @@
+*.py
+brand-api
+nixpacks.toml
+railway.json
+_section_04.html
+node_modules
+.git
+*.log
+
+# Assets não usados pelo index.html (reduz payload de 165MB → ~90MB)
+assets/3dicons
+assets/avatars
+assets/creatives
+assets/decoratives
+assets/fluent3d
+assets/foxes
+assets/foxes_quadrants
+assets/holographic
+assets/illustrations
+assets/patterns
+assets/scenes_3d
+assets/tech

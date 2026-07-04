@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1350" width="1080" height="1350">
+  <defs>
+    <linearGradient id="g-ao" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#F4C430"/><stop offset="1" stop-color="#FF6B35"/>
+    </linearGradient>
+    <linearGradient id="g-aov" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#F4C430"/><stop offset="1" stop-color="#FF6B35"/>
+    </linearGradient>
+    <linearGradient id="g-or" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#FF6B35"/><stop offset="1" stop-color="#C41E3A"/>
+    </linearGradient>
+    <pattern id="dots-dark" x="0" y="0" width="32" height="32" patternUnits="userSpaceOnUse">
+      <circle cx="16" cy="16" r="1.1" fill="#F4C430" opacity="0.28"/>
+    </pattern>
+    <pattern id="dots-light" x="0" y="0" width="36" height="36" patternUnits="userSpaceOnUse">
+      <circle cx="18" cy="18" r="1.2" fill="#1A1A1A" opacity="0.07"/>
+    </pattern>
+  </defs>
+  <rect width="1080" height="1350" fill="url(#g-aov)"/>
+  <rect width="1080" height="1350" fill="#FAF3E0" opacity="0.05"/>
+  <rect x="0" y="0" width="1080" height="8" fill="#1A1A1A"/>
+
+  <text x="80" y="140" font-family="JetBrains Mono,monospace" font-size="14" font-weight="700" letter-spacing="4" fill="#1A1A1A">PESQUISA · RELATÓRIO 2026</text>
+
+  <!-- título -->
+  <g font-family="Poppins,sans-serif" font-weight="900" letter-spacing="-3">
+    <text x="80" y="290" font-size="98" fill="#1A1A1A">Direito + IA</text>
+    <text x="80" y="390" font-size="98" fill="#FAF3E0">no Brasil 2026</text>
+  </g>
+
+  <!-- linha separadora -->
+  <rect x="80" y="450" width="120" height="3" fill="#1A1A1A"/>
+
+  <!-- lead (contextualiza) -->
+  <text x="80" y="510" font-family="Montserrat,sans-serif" font-weight="500" font-size="24" fill="#1A1A1A" opacity="0.85">Como escritórios e departamentos jurídicos estão</text>
+  <text x="80" y="542" font-family="Montserrat,sans-serif" font-weight="500" font-size="24" fill="#1A1A1A" opacity="0.85">adotando inteligência artificial — em números.</text>
+
+  <!-- dois cards stats lado a lado (mesma altura, mesmo padding interno) -->
+  <g transform="translate(80 620)">
+    <rect width="430" height="200" rx="16" fill="#FAF3E0"/>
+    <text x="28" y="38" font-family="JetBrains Mono,monospace" font-size="11" font-weight="700" letter-spacing="3" fill="#C41E3A">ADOÇÃO</text>
+    <text x="28" y="138" font-family="Poppins,sans-serif" font-weight="900" font-size="92" fill="#FF6B35" letter-spacing="-3">87%</text>
+    <rect x="28" y="152" width="48" height="3" fill="#1A1A1A"/>
+    <text x="28" y="182" font-family="Montserrat,sans-serif" font-weight="500" font-size="15" fill="#1A1A1A">escritórios usam IA</text>
+  </g>
+  <g transform="translate(530 620)">
+    <rect width="430" height="200" rx="16" fill="#1A1A1A"/>
+    <text x="28" y="38" font-family="JetBrains Mono,monospace" font-size="11" font-weight="700" letter-spacing="3" fill="#F4C430">PRODUTIVIDADE</text>
+    <text x="28" y="138" font-family="Poppins,sans-serif" font-weight="900" font-size="92" fill="#F4C430" letter-spacing="-3">3.2x</text>
+    <rect x="28" y="152" width="48" height="3" fill="#FF6B35"/>
+    <text x="28" y="182" font-family="Montserrat,sans-serif" font-weight="500" font-size="15" fill="#FAF3E0">aumento médio</text>
+  </g>
+
+  <!-- bloco fonte (grouping) -->
+  <g transform="translate(80 870)">
+    <text x="0" y="0" font-family="Poppins,sans-serif" font-weight="800" font-size="22" fill="#1A1A1A">Estudo iLab · n=1.200</text>
+    <text x="0" y="32" font-family="Montserrat,sans-serif" font-weight="400" font-size="18" fill="#1A1A1A" opacity="0.72">Escritórios e departamentos jurídicos em 26 estados.</text>
+  </g>
+
+  <!-- CTA -->
+  <g transform="translate(80 980)">
+    <rect width="420" height="76" rx="38" fill="#1A1A1A"/>
+    <text x="210" y="49" font-family="JetBrains Mono,monospace" font-size="14" font-weight="700" letter-spacing="3" fill="#F4C430" text-anchor="middle">BAIXAR RELATÓRIO ↓</text>
+  </g>
+
+  <g transform="translate(80 1260)">
+    <text font-family="Poppins,sans-serif" font-weight="900" font-size="28" letter-spacing="-1">
+      <tspan fill="#1A1A1A">i</tspan><tspan fill="#1A1A1A">Lab</tspan>
+    </text>
+    <text x="0" y="32" font-family="JetBrains Mono,monospace" font-size="11" font-weight="700" letter-spacing="3" fill="#1A1A1A" opacity=".6">SANFRAN · FD-USP</text>
+  </g>
+  <text x="1000" y="1292" font-family="JetBrains Mono,monospace" font-size="12" font-weight="700" letter-spacing="3" fill="#1A1A1A" text-anchor="end">@SANFRANILAB</text>
+</svg>

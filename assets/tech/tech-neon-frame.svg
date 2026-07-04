@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 300" width="480" height="300">
+  <defs>
+    <filter id="ng" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="4" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <rect width="480" height="300" fill="#1A1A1A"/>
+  <g stroke="#F4C430" stroke-width="2" fill="none" filter="url(#ng)">
+    <path d="M50 30 H 380 L 430 80 V 270 H 100 L 50 220 Z"/>
+  </g>
+  <g stroke="#FF6B35" stroke-width="1" fill="none">
+    <path d="M50 30 H 380 L 430 80 V 270 H 100 L 50 220 Z"/>
+  </g>
+  <g fill="#F4C430" filter="url(#ng)">
+    <circle cx="50" cy="30" r="4"/><circle cx="430" cy="270" r="4"/>
+  </g>
+  <text x="240" y="170" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="14" letter-spacing="4" fill="#F4C430" filter="url(#ng)">// iLab</text>
+</svg>

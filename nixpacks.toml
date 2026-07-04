@@ -1,0 +1,14 @@
+# Configuração Nixpacks para Railway
+# Garante Node 20 + dependências de sistema para Playwright/Chromium
+
+[phases.setup]
+nixPkgs = ['nodejs_20']
+
+[phases.install]
+cmds = ['cd brand-api && npm ci']
+
+[phases.build]
+cmds = ['cd brand-api && npx playwright install chromium --with-deps']
+
+[start]
+cmd = 'cd brand-api && npm start'

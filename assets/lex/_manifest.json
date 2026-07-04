@@ -1,0 +1,402 @@
+[
+  {
+    "label": "Acolhimento",
+    "slug": "acolhimento",
+    "category": "empatia",
+    "file": "assets/lex/acolhimento.png",
+    "size": [
+      2804,
+      2181
+    ]
+  },
+  {
+    "label": "Olá",
+    "slug": "ola",
+    "category": "empatia",
+    "file": "assets/lex/ola.png",
+    "size": [
+      2303,
+      2198
+    ]
+  },
+  {
+    "label": "Aprovação",
+    "slug": "aprovacao",
+    "category": "empatia",
+    "file": "assets/lex/aprovacao.png",
+    "size": [
+      2195,
+      2323
+    ]
+  },
+  {
+    "label": "Gratidão",
+    "slug": "gratidao",
+    "category": "empatia",
+    "file": "assets/lex/gratidao.png",
+    "size": [
+      1670,
+      2323
+    ]
+  },
+  {
+    "label": "Ideia Brilhante",
+    "slug": "ideia-brilhante",
+    "category": "intelecto",
+    "file": "assets/lex/ideia-brilhante.png",
+    "size": [
+      2029,
+      2364
+    ]
+  },
+  {
+    "label": "Empolgação",
+    "slug": "empolgacao",
+    "category": "empatia",
+    "file": "assets/lex/empolgacao.png",
+    "size": [
+      2087,
+      2139
+    ]
+  },
+  {
+    "label": "Surpresa",
+    "slug": "surpresa",
+    "category": "empatia",
+    "file": "assets/lex/surpresa.png",
+    "size": [
+      1671,
+      2223
+    ]
+  },
+  {
+    "label": "Euforia",
+    "slug": "euforia",
+    "category": "empatia",
+    "file": "assets/lex/euforia.png",
+    "size": [
+      2662,
+      2496
+    ]
+  },
+  {
+    "label": "Estudioso",
+    "slug": "estudioso",
+    "category": "intelecto",
+    "file": "assets/lex/estudioso.png",
+    "size": [
+      2087,
+      2214
+    ]
+  },
+  {
+    "label": "Analítico",
+    "slug": "analitico",
+    "category": "intelecto",
+    "file": "assets/lex/analitico.png",
+    "size": [
+      1711,
+      2148
+    ]
+  },
+  {
+    "label": "Anotações",
+    "slug": "anotacoes",
+    "category": "intelecto",
+    "file": "assets/lex/anotacoes.png",
+    "size": [
+      2204,
+      2496
+    ]
+  },
+  {
+    "label": "Investigação",
+    "slug": "investigacao",
+    "category": "intelecto",
+    "file": "assets/lex/investigacao.png",
+    "size": [
+      1795,
+      2496
+    ]
+  },
+  {
+    "label": "Construtor",
+    "slug": "construtor",
+    "category": "execucao",
+    "file": "assets/lex/construtor.png",
+    "size": [
+      2462,
+      2231
+    ]
+  },
+  {
+    "label": "Mão na Massa",
+    "slug": "mao-na-massa",
+    "category": "execucao",
+    "file": "assets/lex/mao-na-massa.png",
+    "size": [
+      1920,
+      2156
+    ]
+  },
+  {
+    "label": "Multitarefa",
+    "slug": "multitarefa",
+    "category": "execucao",
+    "file": "assets/lex/multitarefa.png",
+    "size": [
+      2437,
+      2496
+    ]
+  },
+  {
+    "label": "Prototipando",
+    "slug": "prototipando",
+    "category": "execucao",
+    "file": "assets/lex/prototipando.png",
+    "size": [
+      2428,
+      2496
+    ]
+  },
+  {
+    "label": "Confusão Técnica",
+    "slug": "confusao-tecnica",
+    "category": "execucao",
+    "file": "assets/lex/confusao-tecnica.png",
+    "size": [
+      2521,
+      2139
+    ]
+  },
+  {
+    "label": "Perdido",
+    "slug": "perdido",
+    "category": "execucao",
+    "file": "assets/lex/perdido.png",
+    "size": [
+      2420,
+      2139
+    ]
+  },
+  {
+    "label": "Erro 404",
+    "slug": "erro-404",
+    "category": "execucao",
+    "file": "assets/lex/erro-404.png",
+    "size": [
+      2595,
+      2496
+    ]
+  },
+  {
+    "label": "Bloqueio",
+    "slug": "bloqueio",
+    "category": "execucao",
+    "file": "assets/lex/bloqueio.png",
+    "size": [
+      2453,
+      2496
+    ]
+  },
+  {
+    "label": "Dor de Cabeça",
+    "slug": "dor-de-cabeca",
+    "category": "empatia",
+    "file": "assets/lex/dor-de-cabeca.png",
+    "size": [
+      2387,
+      2206
+    ]
+  },
+  {
+    "label": "Exaustão",
+    "slug": "exaustao",
+    "category": "empatia",
+    "file": "assets/lex/exaustao.png",
+    "size": [
+      2470,
+      2081
+    ]
+  },
+  {
+    "label": "Tristeza",
+    "slug": "tristeza",
+    "category": "empatia",
+    "file": "assets/lex/tristeza.png",
+    "size": [
+      2254,
+      2496
+    ]
+  },
+  {
+    "label": "Frustração",
+    "slug": "frustracao",
+    "category": "empatia",
+    "file": "assets/lex/frustracao.png",
+    "size": [
+      1820,
+      2496
+    ]
+  },
+  {
+    "label": "Astúcia",
+    "slug": "astucia",
+    "category": "astucia",
+    "file": "assets/lex/astucia.png",
+    "size": [
+      2862,
+      2206
+    ]
+  },
+  {
+    "label": "Negócio Fechado",
+    "slug": "negocio-fechado",
+    "category": "astucia",
+    "file": "assets/lex/negocio-fechado.png",
+    "size": [
+      2186,
+      2206
+    ]
+  },
+  {
+    "label": "Segredo",
+    "slug": "segredo",
+    "category": "astucia",
+    "file": "assets/lex/segredo.png",
+    "size": [
+      4351,
+      2494
+    ]
+  },
+  {
+    "label": "Confiança",
+    "slug": "confianca",
+    "category": "astucia",
+    "file": "assets/lex/confianca.png",
+    "size": [
+      4777,
+      2494
+    ]
+  },
+  {
+    "label": "Veredito",
+    "slug": "veredito",
+    "category": "astucia",
+    "file": "assets/lex/veredito.png",
+    "size": [
+      2570,
+      2148
+    ]
+  },
+  {
+    "label": "Equilíbrio",
+    "slug": "equilibrio",
+    "category": "astucia",
+    "file": "assets/lex/equilibrio.png",
+    "size": [
+      2595,
+      2073
+    ]
+  },
+  {
+    "label": "Objeção",
+    "slug": "objecao",
+    "category": "astucia",
+    "file": "assets/lex/objecao.png",
+    "size": [
+      2587,
+      2496
+    ]
+  },
+  {
+    "label": "Solenidade",
+    "slug": "solenidade",
+    "category": "astucia",
+    "file": "assets/lex/solenidade.png",
+    "size": [
+      2528,
+      2496
+    ]
+  },
+  {
+    "label": "Didática",
+    "slug": "didatica",
+    "category": "intelecto",
+    "file": "assets/lex/didatica.png",
+    "size": [
+      4403,
+      2123
+    ]
+  },
+  {
+    "label": "Apresentação",
+    "slug": "apresentacao",
+    "category": "intelecto",
+    "file": "assets/lex/apresentacao.png",
+    "size": [
+      3220,
+      2206
+    ]
+  },
+  {
+    "label": "Discurso",
+    "slug": "discurso",
+    "category": "intelecto",
+    "file": "assets/lex/discurso.png",
+    "size": [
+      3037,
+      2373
+    ]
+  },
+  {
+    "label": "Mentoria",
+    "slug": "mentoria",
+    "category": "intelecto",
+    "file": "assets/lex/mentoria.png",
+    "size": [
+      1978,
+      2431
+    ]
+  },
+  {
+    "label": "Conectado",
+    "slug": "conectado",
+    "category": "execucao",
+    "file": "assets/lex/conectado.png",
+    "size": [
+      3687,
+      2256
+    ]
+  },
+  {
+    "label": "Pausa",
+    "slug": "pausa",
+    "category": "empatia",
+    "file": "assets/lex/pausa.png",
+    "size": [
+      2654,
+      2248
+    ]
+  },
+  {
+    "label": "Pesquisa",
+    "slug": "pesquisa",
+    "category": "intelecto",
+    "file": "assets/lex/pesquisa.png",
+    "size": [
+      3728,
+      2496
+    ]
+  },
+  {
+    "label": "Mobile",
+    "slug": "mobile",
+    "category": "execucao",
+    "file": "assets/lex/mobile.png",
+    "size": [
+      2379,
+      2496
+    ]
+  }
+]

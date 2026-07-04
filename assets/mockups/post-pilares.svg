@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1350" width="1080" height="1350">
+  <defs>
+    <linearGradient id="g-ao" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#F4C430"/><stop offset="1" stop-color="#FF6B35"/>
+    </linearGradient>
+    <linearGradient id="g-aov" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#F4C430"/><stop offset="1" stop-color="#FF6B35"/>
+    </linearGradient>
+    <linearGradient id="g-or" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#FF6B35"/><stop offset="1" stop-color="#C41E3A"/>
+    </linearGradient>
+    <pattern id="dots" x="0" y="0" width="28" height="28" patternUnits="userSpaceOnUse">
+      <circle cx="14" cy="14" r="1.1" fill="#F4C430" opacity="0.32"/>
+    </pattern>
+    <pattern id="grid-l" x="0" y="0" width="60" height="60" patternUnits="userSpaceOnUse">
+      <path d="M60 0H0V60" stroke="#1A1A1A" stroke-width="1" fill="none" opacity="0.06"/>
+    </pattern>
+  </defs>
+  <rect width="1080" height="1350" fill="#1A1A1A"/>
+  <rect x="0" y="0" width="1080" height="10" fill="url(#g-ao)"/>
+  <text x="80" y="140" font-family="JetBrains Mono,monospace" font-size="20" font-weight="700" letter-spacing="6" fill="#F4C430">CARD 02 · OS 4 PILARES</text>
+  <text x="80" y="240" font-family="Poppins,sans-serif" font-weight="900" font-size="80" fill="#FAF3E0" letter-spacing="-2">Quatro pilares,</text>
+  <text x="80" y="330" font-family="Poppins,sans-serif" font-weight="900" font-size="80" fill="url(#g-ao)" letter-spacing="-2">um só ecossistema.</text>
+  <!-- Grid 2x2 -->
+  <g transform="translate(80 420)">
+    <rect x="0" y="0" width="440" height="320" fill="#FAF3E0" rx="14"/>
+    <text x="32" y="68" font-family="Poppins,sans-serif" font-weight="900" font-size="86" fill="#C41E3A">25%</text>
+    <rect x="32" y="100" width="60" height="3" fill="#FF6B35"/>
+    <text x="32" y="160" font-family="Poppins,sans-serif" font-weight="900" font-size="32" fill="#1A1A1A">Pesquisa</text>
+    <text x="32" y="208" font-family="Montserrat,sans-serif" font-size="18" fill="#1A1A1A" opacity="0.72">Estudos aplicados em</text>
+    <text x="32" y="232" font-family="Montserrat,sans-serif" font-size="18" fill="#1A1A1A" opacity="0.72">direito, tech e regulação.</text>
+  </g>
+  <g transform="translate(560 420)">
+    <rect x="0" y="0" width="440" height="320" fill="#F4C430" rx="14"/>
+    <text x="32" y="68" font-family="Poppins,sans-serif" font-weight="900" font-size="86" fill="#1A1A1A">25%</text>
+    <rect x="32" y="100" width="60" height="3" fill="#C41E3A"/>
+    <text x="32" y="160" font-family="Poppins,sans-serif" font-weight="900" font-size="32" fill="#1A1A1A">Ensino</text>
+    <text x="32" y="208" font-family="Montserrat,sans-serif" font-size="18" fill="#1A1A1A" opacity="0.75">Trilhas formativas e</text>
+    <text x="32" y="232" font-family="Montserrat,sans-serif" font-size="18" fill="#1A1A1A" opacity="0.75">imersões interdisciplinares.</text>
+  </g>
+  <g transform="translate(80 770)">
+    <rect x="0" y="0" width="440" height="320" fill="#FF6B35" rx="14"/>
+    <text x="32" y="68" font-family="Poppins,sans-serif" font-weight="900" font-size="86" fill="#1A1A1A">25%</text>
+    <rect x="32" y="100" width="60" height="3" fill="#1A1A1A"/>
+    <text x="32" y="160" font-family="Poppins,sans-serif" font-weight="900" font-size="32" fill="#FAF3E0">Extensão</text>
+    <text x="32" y="208" font-family="Montserrat,sans-serif" font-size="18" fill="#FAF3E0" opacity="0.92">Projetos abertos à</text>
+    <text x="32" y="232" font-family="Montserrat,sans-serif" font-size="18" fill="#FAF3E0" opacity="0.92">comunidade jurídica.</text>
+  </g>
+  <g transform="translate(560 770)">
+    <rect x="0" y="0" width="440" height="320" fill="#C41E3A" rx="14"/>
+    <text x="32" y="68" font-family="Poppins,sans-serif" font-weight="900" font-size="86" fill="#FAF3E0">25%</text>
+    <rect x="32" y="100" width="60" height="3" fill="#F4C430"/>
+    <text x="32" y="160" font-family="Poppins,sans-serif" font-weight="900" font-size="32" fill="#FAF3E0">Startups</text>
+    <text x="32" y="208" font-family="Montserrat,sans-serif" font-size="18" fill="#FAF3E0" opacity="0.92">Aceleração de spin-offs</text>
+    <text x="32" y="232" font-family="Montserrat,sans-serif" font-size="18" fill="#FAF3E0" opacity="0.92">e lawtechs da USP.</text>
+  </g>
+  <text x="80" y="1280" font-family="Poppins,sans-serif" font-weight="900" font-size="30" fill="#F4C430">iLab<tspan fill="#FAF3E0" font-size="16" font-weight="400" dx="10">SANFRAN · FD-USP</tspan></text>
+</svg>

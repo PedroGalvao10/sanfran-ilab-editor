@@ -1,0 +1,17 @@
+2764: // Ponte MCP → Editor: se a URL tiver ?draft=<id>, busca o rascunho (uso único,
+2766: // cada camada via fieldKey, foto no slot se houver. Ver create_post_draft no
+2767: // mcp/server.js e BP_MCP_Draft_Handoff_Editor.md pro desenho completo.
+2768: async function loadDraftFromUrl() {
+2769: const draftId = new URLSearchParams(window.location.search).get('draft');
+2770: if (!draftId) return;
+2779: const res = await fetch(`http://localhost:3000/brand/drafts/${draftId}`);
+2781: console.warn('[Draft] Rascunho não encontrado, expirado ou já aberto:', draftId);
+2784: const draft = await res.json();
+2785: const tpl = TEMPLATE_LAYOUTS[draft.templateId];
+2787: console.warn('[Draft] Template desconhecido no rascunho:', draft.templateId);
+2798: if (layer.fieldKey && draft.fields && draft.fields[layer.fieldKey] !== undefined) {
+2799: layer.content = draft.fields[layer.fieldKey];
+2803: if (draft.photoUrl) {
+2805: if (slot) fillPhotoSlot(ab, slot, draft.photoUrl, 'Foto do rascunho');
+2812: console.warn('[Draft] Falha ao carregar rascunho:', err);
+4226: loadDraftFromUrl();

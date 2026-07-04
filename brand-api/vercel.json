@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "api/server.js",
+      "use": "@vercel/node",
+      "config": {
+        "includeFiles": ["brand.json"]
+      }
+    }
+  ],
+  "routes": [
+    { "src": "/(.*)", "dest": "api/server.js" }
+  ],
+  "env": {
+    "RENDER_DISABLED": "1",
+    "NODE_ENV": "production"
+  }
+}

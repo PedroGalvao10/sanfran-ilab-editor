@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400">
+  <defs>
+    <linearGradient id="top" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F4C430"/><stop offset="1" stop-color="#FF6B35"/></linearGradient>
+    <linearGradient id="left" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FF6B35"/><stop offset="1" stop-color="#C41E3A"/></linearGradient>
+    <linearGradient id="right" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#C41E3A"/><stop offset="1" stop-color="#1A1A1A"/></linearGradient>
+  </defs>
+  <rect width="400" height="400" fill="#1A1A1A"/>
+  <!-- Base cube -->
+  <polygon points="200,280 280,240 360,280 280,320" fill="url(#top)"/>
+  <polygon points="200,280 200,360 280,400 280,320" fill="url(#left)"/>
+  <polygon points="280,320 360,280 360,360 280,400" fill="url(#right)"/>
+  <!-- Mid cube -->
+  <polygon points="160,200 240,160 320,200 240,240" fill="url(#top)" opacity="0.95"/>
+  <polygon points="160,200 160,280 240,320 240,240" fill="url(#left)" opacity="0.95"/>
+  <polygon points="240,240 320,200 320,280 240,320" fill="url(#right)" opacity="0.95"/>
+  <!-- Top cube -->
+  <polygon points="200,120 280,80 360,120 280,160" fill="url(#top)" opacity="0.9"/>
+  <polygon points="200,120 200,200 280,240 280,160" fill="url(#left)" opacity="0.9"/>
+  <polygon points="280,160 360,120 360,200 280,240" fill="url(#right)" opacity="0.9"/>
+</svg>

@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Figma iLab - SanFran Brand</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Montserrat:wght@400;500;700&family=Poppins:wght@800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* SanFran iLab Brand Palette */
+            --bg-deep: #111111;
+            --bg-base: #1A1A1A;
+            --surface-color: rgba(26, 26, 26, 0.7);
+            
+            --brand-yellow: #F4C430;
+            --brand-orange: #FF6B35;
+            --brand-red: #C41E3A;
+            
+            --text-primary: #FAF3E0; /* Warm White */
+            --text-secondary: #777777; /* Gray */
+            
+            --border-color: rgba(250, 243, 224, 0.1); /* warmWhite with opacity */
+            
+            --gradient-primary: linear-gradient(90deg, var(--brand-yellow), var(--brand-orange));
+            --gradient-warm: linear-gradient(90deg, var(--brand-orange), var(--brand-red));
+            --gradient-full: linear-gradient(90deg, var(--brand-yellow), var(--brand-orange), var(--brand-red));
+
+            --font-display: 'Poppins', sans-serif;
+            --font-ui: 'Montserrat', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: var(--font-ui);
+            background-color: var(--bg-deep);
+            color: var(--text-primary);
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            user-select: none;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* iLab Glassmorphism */
+        .glass {
+            background: var(--surface-color);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+        }
+
+        /* Layout */
+        .topbar {
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 24px;
+            z-index: 100;
+            border-bottom: 1px solid var(--border-color);
+            background: rgba(17, 17, 17, 0.85); /* Deep black */
+        }
+
+        .main-container {
+            display: flex;
+            flex: 1;
+            height: calc(100vh - 64px);
+            overflow: hidden;
+        }
+
+        .sidebar-left, .sidebar-right {
+            width: 300px;
+            height: 100%;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            background: var(--bg-base);
+        }
+
+        .sidebar-left { border-right: 1px solid var(--border-color); }
+        .sidebar-right { border-left: 1px solid var(--border-color); }
+
+        .workspace {
+            flex: 1;
+            background-image: radial-gradient(circle at center, #222222 0%, var(--bg-deep) 100%);
+            position: relative;
+            overflow: hidden;
+            cursor: grab;
+        }
+
+        .workspace:active { cursor: grabbing; }
+
+        /* The Infinite Canvas */
+        .canvas-container {
+            position: absolute;
+            top: 0; left: 0;
+            transform-origin: 0 0;
+        }
+
+        /* The Artboard */
+        .artboard {
+            position: absolute;
+            background: #fff;
+            box-shadow: 0 32px 64px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.05);
+            width: 1080px;
+            height: 1080px;
+            overflow: hidden;
+        }
+
+        /* UI Elements */
+        .tool-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+        .tool-btn:hover {
+            background: rgba(250, 243, 224, 0.05);
+            color: var(--text-primary);
+        }
+        
+        .tool-btn.active {
+            background: var(--border-color);
+            color: var(--brand-yellow);
+            box-shadow: inset 0 0 0 1px var(--brand-orange);
+        }
+
+        .tools-group {
+            display: flex;
+            gap: 4px;
+            background: rgba(0,0,0,0.4);
+            padding: 4px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+        }
+
+        .panel-header {
+            padding: 16px 24px;
+            font-size: 11px;
+            font-family: var(--font-mono);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--brand-yellow);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .panel-content {
+            padding: 16px 24px;
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        /* Upload Button styling */
+        .upload-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(250, 243, 224, 0.05);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-family: var(--font-mono);
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .upload-btn:hover {
+            background: rgba(250, 243, 224, 0.1);
+            border-color: var(--brand-yellow);
+            color: var(--brand-yellow);
+        }
+
+        /* Hidden file input */
+        #svg-upload { display: none; }
+
+        /* Custom Scrollbar for panels */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(250, 243, 224, 0.1); border-radius: 4px; border: 2px solid var(--bg-base); }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(250, 243, 224, 0.2); }
+
+        .btn-primary {
+            background: var(--gradient-primary);
+            color: var(--bg-deep);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            font-weight: 700;
+            font-family: var(--font-mono);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: transform 0.1s, opacity 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
+        }
+        .btn-primary:hover { opacity: 0.9; box-shadow: 0 6px 16px rgba(255, 107, 53, 0.5); }
+        .btn-primary:active { transform: scale(0.96); }
+
+        /* Layer Items */
+        .layer-item {
+            padding: 10px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-family: var(--font-ui);
+            font-weight: 500;
+            cursor: pointer;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.1s;
+        }
+        .layer-item:hover { background: rgba(250, 243, 224, 0.05); }
+        .layer-item.selected {
+            background: rgba(244, 196, 48, 0.1);
+            border-left: 3px solid var(--brand-yellow);
+            color: var(--brand-yellow);
+        }
+        
+        .layer-icon {
+            width: 16px;
+            height: 16px;
+            opacity: 0.7;
+        }
+
+        .logo {
+            font-family: var(--font-display); 
+            font-weight: 900; 
+            font-size: 24px; 
+            letter-spacing: -1px;
+            color: var(--text-primary);
+        }
+        .logo span {
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+<body>
+    <!-- Topbar -->
+    <header class="topbar glass">
+        <div class="logo">SanFran <span>iLab</span></div>
+        
+        <div class="tools-group">
+            <button class="tool-btn active" title="Move (V)" id="tool-move">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3l7.07 16.97 2.51-7.39 7.39-2.51L3 3z"/></svg>
+            </button>
+            <button class="tool-btn" title="Text (T)" id="tool-text">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg>
+            </button>
+            <button class="tool-btn" title="Rectangle (R)" id="tool-rect">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/></svg>
+            </button>
+        </div>
+
+        <div class="actions" style="display: flex; align-items: center; gap: 16px;">
+            <span id="zoom-level" style="font-size: 13px; font-weight: 500; color: var(--text-secondary);">100%</span>
+            <button class="btn-primary" id="btn-export">Exportar SVG</button>
+        </div>
+    </header>
+
+    <main class="main-container">
+        <!-- Left Sidebar (Assets & Layers) -->
+        <aside class="sidebar-left glass">
+            <div class="panel-header">
+                Assets Library
+                <!-- Upload Mídia Button -->
+                <label for="svg-upload" class="upload-btn">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                    Upload Mídia
+                </label>
+                <input type="file" id="svg-upload" accept="image/*,.svg">
+            </div>
+            
+            <!-- CSS for Asset Grid -->
+            <style>
+                .asset-grid {
+                    display: grid;
+                    grid-template-columns: repeat(3, 1fr);
+                    gap: 8px;
+                    padding-top: 8px;
+                }
+                .asset-item {
+                    aspect-ratio: 1;
+                    background: rgba(255,255,255,0.02);
+                    border: 1px solid var(--border-color);
+                    border-radius: 6px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    cursor: grab;
+                    overflow: hidden;
+                    padding: 4px;
+                    transition: border-color 0.1s;
+                }
+                .asset-item:hover {
+                    border-color: var(--brand-yellow);
+                }
+                .asset-item img {
+                    max-width: 100%;
+                    max-height: 100%;
+                    object-fit: contain;
+                }
+                .category-title {
+                    font-size: 11px;
+                    font-weight: 700;
+                    text-transform: uppercase;
+                    color: var(--text-secondary);
+                    margin: 16px 0 8px 0;
+                    letter-spacing: 1px;
+                }
+            </style>
+
+            <div class="panel-content" id="assets-panel" style="padding-top: 0;">
+                <p style="font-size: 13px; color: var(--text-secondary); margin-top:16px;">Carregando assets...</p>
+            </div>
+            
+            <div class="panel-header" style="border-top: 1px solid var(--border-color)">Camadas</div>
+            <div class="panel-content" id="layers-panel" style="padding: 12px 16px;">
+                <!-- Layers injected via JS -->
+            </div>
+        </aside>
+
+        <!-- Infinite Workspace -->
+        <section class="workspace" id="workspace">
+            <div class="canvas-container" id="canvas-container">
+                <!-- Artboards go here -->
+            </div>
+        </section>
+
+        <!-- Right Sidebar (Properties) -->
+        <aside class="sidebar-right glass">
+            <div class="panel-header">Propriedades</div>
+            <div class="panel-content" id="inspector-panel">
+                <p style="font-size: 13px; color: var(--text-secondary);">Selecione um elemento para editar.</p>
+            </div>
+        </aside>
+    </main>
+
+    <script>
+        // --- State Management (The iLab Engine) ---
+        const UIState = {
+            zoom: 0.5,
+            panX: 0,
+            panY: 0,
+            isPanning: false,
+            startX: 0,
+            startY: 0,
+            activeTool: 'move', // 'move', 'text', 'rect'
+            brandTokens: null,
+            assetsData: null
+        };
+
+        const docState = {
+            artboards: [
+                {
+                    id: 'ab-1',
+                    name: 'Design 01',
+                    x: 500,
+                    y: 100,
+                    width: 1080,
+                    height: 1080,
+                    layers: [
+                        { id: 'l-1', type: 'rect', x: 0, y: 0, width: 1080, height: 1080, fill: '#0A0A0A', name: 'Background' },
+                        { id: 'l-2', type: 'text', content: 'Design Apple Level', x: 80, y: 150, fontSize: 72, fontFamily: 'var(--font-brand)', fill: '#FFFFFF', name: 'Title' }
+                    ]
+                }
+            ],
+            selection: [] // array of layer IDs
+        };
+
+        const workspace = document.getElementById('workspace');
+        const canvasContainer = document.getElementById('canvas-container');
+        const zoomLabel = document.getElementById('zoom-level');
+        const layersPanel = document.getElementById('layers-panel');
+        const svgUploadInput = document.getElementById('svg-upload');
+
+        // --- Upload SVG Functionality ---
+        svgUploadInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            
+            reader.onload = (event) => {
+                const content = event.target.result;
+                const ab = docState.artboards[0];
+                const newId = 'l-' + Date.now();
+                
+                const isSvg = file.type === 'image/svg+xml' || file.name.endsWith('.svg');
+                
+                ab.layers.push({
+                    id: newId,
+                    type: isSvg ? 'svg' : 'image',
+                    content: content,
+                    x: 50,
+                    y: 50,
+                    width: 500, // Default drop size
+                    height: 500,
+                    name: file.name
+                });
+                
+                // Auto-select
+                docState.selection = [newId];
+                renderDocument();
+            };
+
+            // Read SVG as text, other images as base64 Data URL
+            if (file.type === 'image/svg+xml' || file.name.endsWith('.svg')) {
+                reader.readAsText(file);
+            } else {
+                reader.readAsDataURL(file);
+            }
+            
+            // Reset input so the same file can be uploaded again if needed
+            svgUploadInput.value = '';
+        });
+
+        // --- Render Engine ---
+        function renderDocument() {
+            canvasContainer.innerHTML = '';
+            layersPanel.innerHTML = '';
+
+            // Reverse artboards/layers for rendering so top layers are at the end of DOM
+            docState.artboards.forEach(ab => {
+                // 1. Render Artboard
+                const abEl = document.createElement('div');
+                abEl.className = 'artboard';
+                abEl.id = ab.id;
+                abEl.style.transform = `translate(${ab.x}px, ${ab.y}px)`;
+                abEl.style.width = `${ab.width}px`;
+                abEl.style.height = `${ab.height}px`;
+
+                // Render layers inside artboard
+                ab.layers.forEach(layer => {
+                    const layerEl = document.createElement('div');
+                    layerEl.id = layer.id;
+                    layerEl.style.position = 'absolute';
+                    layerEl.style.left = `${layer.x}px`;
+                    layerEl.style.top = `${layer.y}px`;
+                    layerEl.style.width = `${layer.width}px`;
+                    layerEl.style.height = `${layer.height}px`;
+
+                    if (docState.selection.includes(layer.id)) {
+                        if (layer.type === 'image' || layer.type === 'svg') {
+                            layerEl.style.filter = 'drop-shadow(0 0 4px var(--brand-yellow)) drop-shadow(0 0 12px var(--brand-orange))';
+                        } else {
+                            layerEl.style.outline = '3px solid var(--brand-yellow)';
+                            layerEl.style.outlineOffset = '-1px';
+                        }
+                    }
+
+                    if (layer.type === 'rect') {
+                        layerEl.style.backgroundColor = layer.fill;
+                    } else if (layer.type === 'text') {
+                        layerEl.textContent = layer.content;
+                        layerEl.style.fontFamily = layer.fontFamily;
+                        layerEl.style.fontSize = `${layer.fontSize}px`;
+                        layerEl.style.color = layer.fill;
+                        layerEl.style.whiteSpace = 'nowrap';
+                    } else if (layer.type === 'svg') {
+                        // Render SVG content
+                        layerEl.innerHTML = layer.content;
+                        // Ensure SVG scales to container
+                        const svgTag = layerEl.querySelector('svg');
+                        if (svgTag) {
+                            svgTag.style.width = '100%';
+                            svgTag.style.height = '100%';
+                        }
+                    } else if (layer.type === 'image') {
+                        const img = document.createElement('img');
+                        img.src = layer.content;
+                        img.style.width = '100%';
+                        img.style.height = '100%';
+                        img.style.objectFit = 'contain';
+                        img.style.pointerEvents = 'none'; // prevent native dragging
+                        layerEl.appendChild(img);
+                    }
+                    
+                    // Click to select
+                    layerEl.addEventListener('mousedown', (e) => {
+                        if(UIState.activeTool === 'move') {
+                            e.stopPropagation(); // prevent panning
+                            docState.selection = [layer.id];
+                            renderDocument(); // simple reactivity
+                        }
+                    });
+
+                    abEl.appendChild(layerEl);
+                });
+                
+                canvasContainer.appendChild(abEl);
+
+                // 2. Render Layers in Panel (Reverse order so top layer is at the top of the list)
+                [...ab.layers].reverse().forEach(layer => {
+                    const layerItem = document.createElement('div');
+                    layerItem.className = 'layer-item ' + (docState.selection.includes(layer.id) ? 'selected' : '');
+                    
+                    // Icon logic
+                    let iconSvg = '';
+                    if (layer.type === 'rect') iconSvg = '<svg class="layer-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/></svg>';
+                    else if (layer.type === 'text') iconSvg = '<svg class="layer-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg>';
+                    else if (layer.type === 'svg' || layer.type === 'image') iconSvg = '<svg class="layer-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>';
+
+                    layerItem.innerHTML = `${iconSvg} <span>${layer.name}</span>`;
+                    
+                    layerItem.addEventListener('click', () => {
+                        docState.selection = [layer.id];
+                        renderDocument();
+                    });
+                    layersPanel.appendChild(layerItem);
+                });
+            });
+        }
+
+        // --- Fetch Brand Tokens & Assets ---
+        async function loadBrandTokens() {
+            try {
+                const res = await fetch('http://localhost:3000/brand/context');
+                if(res.ok) {
+                    UIState.brandTokens = await res.json();
+                }
+            } catch (e) {
+                console.warn("Fastify API offline. (Context)");
+            }
+        }
+
+        async function loadAssets() {
+            try {
+                const res = await fetch('http://localhost:3000/brand/assets');
+                if (res.ok) {
+                    UIState.assetsData = await res.json();
+                    renderAssetsPanel();
+                }
+            } catch(e) {
+                console.warn("Fastify API offline. (Assets)");
+                document.getElementById('assets-panel').innerHTML = '<p style="color:red; font-size:12px;">Erro ao carregar assets</p>';
+            }
+        }
+
+        function renderAssetsPanel() {
+            const panel = document.getElementById('assets-panel');
+            panel.innerHTML = '';
+
+            // Order categories (put lex, 3dicons, elementos first)
+            const data = UIState.assetsData || {};
+            const keys = Object.keys(data).sort();
+            
+            keys.forEach(category => {
+                if(category === 'root') return; // ignore root for now
+                if(data[category].length === 0) return;
+
+                // Title
+                const title = document.createElement('div');
+                title.className = 'category-title';
+                title.textContent = category.replace(/_/g, ' ');
+                panel.appendChild(title);
+
+                // Grid
+                const grid = document.createElement('div');
+                grid.className = 'asset-grid';
+
+                data[category].forEach(asset => {
+                    const item = document.createElement('div');
+                    item.className = 'asset-item';
+                    item.draggable = true;
+                    
+                    // Thumbnail
+                    const img = document.createElement('img');
+                    img.src = asset.url;
+                    img.alt = asset.name;
+                    item.appendChild(img);
+
+                    // Drag Data
+                    item.addEventListener('dragstart', (e) => {
+                        e.dataTransfer.setData('text/plain', JSON.stringify(asset));
+                        e.dataTransfer.effectAllowed = 'copy';
+                    });
+
+                    grid.appendChild(item);
+                });
+
+                panel.appendChild(grid);
+            });
+        }
+
+        // --- Drag & Drop into Workspace ---
+        workspace.addEventListener('dragover', (e) => {
+            e.preventDefault(); // allow dropping
+            e.dataTransfer.dropEffect = 'copy';
+        });
+
+        workspace.addEventListener('drop', async (e) => {
+            e.preventDefault();
+            const dataString = e.dataTransfer.getData('text/plain');
+            if(!dataString) return;
+
+            let assetData;
+            try {
+                assetData = JSON.parse(dataString);
+            } catch(err) { return; }
+
+            // Calculate drop coordinates relative to artboard
+            const ab = docState.artboards[0];
+            const rect = workspace.getBoundingClientRect();
+            // Mouse position relative to workspace container
+            const mouseX = e.clientX - rect.left;
+            const mouseY = e.clientY - rect.top;
+            
+            // Undo zoom & pan to get absolute artboard coordinates
+            const abX = (mouseX - UIState.panX) / UIState.zoom - ab.x;
+            const abY = (mouseY - UIState.panY) / UIState.zoom - ab.y;
+
+            const newId = 'l-' + Date.now();
+            let finalContent = assetData.url;
+            let type = assetData.type === 'svg' ? 'svg' : 'image';
+
+            // If SVG, fetch the inline content so we can scale/color it
+            if (type === 'svg') {
+                const res = await fetch(assetData.url);
+                if(res.ok) {
+                    finalContent = await res.text();
+                } else {
+                    type = 'image'; // Fallback to img tag if fetch fails
+                }
+            }
+
+            ab.layers.push({
+                id: newId,
+                type: type,
+                content: finalContent,
+                x: abX - 100, // Center roughly around cursor
+                y: abY - 100,
+                width: 200, // Default asset drop size
+                height: 200,
+                name: assetData.name
+            });
+
+            docState.selection = [newId];
+            renderDocument();
+        });
+
+        // --- Pan & Zoom Engine ---
+        function updateCanvasTransform() {
+            canvasContainer.style.transform = `translate(${UIState.panX}px, ${UIState.panY}px) scale(${UIState.zoom})`;
+            zoomLabel.textContent = `${Math.round(UIState.zoom * 100)}%`;
+        }
+
+        // Mouse Wheel for Zoom
+        workspace.addEventListener('wheel', (e) => {
+            if (e.ctrlKey || e.metaKey) {
+                e.preventDefault();
+                const zoomIntensity = 0.05;
+                const wheel = e.deltaY < 0 ? 1 : -1;
+                
+                const rect = workspace.getBoundingClientRect();
+                const mouseX = e.clientX - rect.left;
+                const mouseY = e.clientY - rect.top;
+                
+                const oldZoom = UIState.zoom;
+                UIState.zoom += wheel * zoomIntensity;
+                UIState.zoom = Math.min(Math.max(0.1, UIState.zoom), 5); // Limit 10% to 500%
+
+                const zoomRatio = UIState.zoom / oldZoom;
+                UIState.panX = mouseX - (mouseX - UIState.panX) * zoomRatio;
+                UIState.panY = mouseY - (mouseY - UIState.panY) * zoomRatio;
+                
+                updateCanvasTransform();
+            } else {
+                // Regular scroll -> pan
+                UIState.panX -= e.deltaX;
+                UIState.panY -= e.deltaY;
+                updateCanvasTransform();
+            }
+        }, { passive: false });
+
+        // Spacebar + Drag for Panning
+        window.addEventListener('keydown', (e) => {
+            if (e.code === 'Space' && !UIState.isPanning) {
+                workspace.style.cursor = 'grab';
+            }
+        });
+        
+        window.addEventListener('keyup', (e) => {
+            if (e.code === 'Space') {
+                workspace.style.cursor = 'default';
+                UIState.isPanning = false;
+            }
+        });
+
+        workspace.addEventListener('mousedown', (e) => {
+            // Middle click or Space+LeftClick starts panning
+            if (e.button === 1 || (e.button === 0 && e.shiftKey)) {
+                e.preventDefault();
+                UIState.isPanning = true;
+                UIState.startX = e.clientX - UIState.panX;
+                UIState.startY = e.clientY - UIState.panY;
+                workspace.style.cursor = 'grabbing';
+            } else if (e.button === 0) {
+                // Click on empty workspace deselects
+                docState.selection = [];
+                renderDocument();
+            }
+        });
+
+        window.addEventListener('mousemove', (e) => {
+            if (!UIState.isPanning) return;
+            UIState.panX = e.clientX - UIState.startX;
+            UIState.panY = e.clientY - UIState.startY;
+            updateCanvasTransform();
+        });
+
+        window.addEventListener('mouseup', () => {
+            UIState.isPanning = false;
+            workspace.style.cursor = 'default';
+        });
+
+        // Initialize
+        function init() {
+            // Center the initial artboard
+            const rect = workspace.getBoundingClientRect();
+            UIState.panX = (rect.width - (1080 * UIState.zoom)) / 2;
+            UIState.panY = (rect.height - (1080 * UIState.zoom)) / 2;
+            
+            updateCanvasTransform();
+            loadBrandTokens();
+            loadAssets();
+            renderDocument();
+        }
+
+        init();
+    </script>
+</body>
+</html>

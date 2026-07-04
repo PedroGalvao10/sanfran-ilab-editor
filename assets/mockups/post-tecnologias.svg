@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1350" width="1080" height="1350">
+  <defs>
+    <linearGradient id="g-ao" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#F4C430"/><stop offset="1" stop-color="#FF6B35"/>
+    </linearGradient>
+    <linearGradient id="g-aov" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#F4C430"/><stop offset="1" stop-color="#FF6B35"/>
+    </linearGradient>
+    <linearGradient id="g-or" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#FF6B35"/><stop offset="1" stop-color="#C41E3A"/>
+    </linearGradient>
+    <pattern id="dots" x="0" y="0" width="28" height="28" patternUnits="userSpaceOnUse">
+      <circle cx="14" cy="14" r="1.1" fill="#F4C430" opacity="0.32"/>
+    </pattern>
+    <pattern id="grid-l" x="0" y="0" width="60" height="60" patternUnits="userSpaceOnUse">
+      <path d="M60 0H0V60" stroke="#1A1A1A" stroke-width="1" fill="none" opacity="0.06"/>
+    </pattern>
+  </defs>
+  <rect width="1080" height="1350" fill="#1A1A1A"/>
+  <rect width="1080" height="1350" fill="url(#dots)"/>
+  <rect x="0" y="0" width="1080" height="10" fill="url(#g-ao)"/>
+  <text x="80" y="140" font-family="JetBrains Mono,monospace" font-size="20" font-weight="700" letter-spacing="6" fill="#F4C430">CARD 04 · STACK iLAB</text>
+  <text x="80" y="240" font-family="Poppins,sans-serif" font-weight="900" font-size="80" fill="#FAF3E0" letter-spacing="-2">As 5 tecnologias</text>
+  <text x="80" y="330" font-family="Poppins,sans-serif" font-weight="900" font-size="80" fill="url(#g-ao)" letter-spacing="-2">que dominamos.</text>
+  <g font-family="Montserrat,sans-serif" fill="#FAF3E0">
+    <g transform="translate(80 430)">
+      <circle cx="40" cy="40" r="36" fill="#F4C430"/>
+      <text x="40" y="54" font-family="Poppins,sans-serif" font-weight="900" font-size="36" fill="#1A1A1A" text-anchor="middle">1</text>
+      <text x="110" y="38" font-family="Poppins,sans-serif" font-weight="900" font-size="38" fill="#FAF3E0">Inteligência Artificial Jurídica</text>
+      <text x="110" y="68" font-size="20" opacity="0.65">LLMs, RAG, agentes legais autônomos.</text>
+    </g>
+    <g transform="translate(80 540)">
+      <circle cx="40" cy="40" r="36" fill="#FF6B35"/>
+      <text x="40" y="54" font-family="Poppins,sans-serif" font-weight="900" font-size="36" fill="#1A1A1A" text-anchor="middle">2</text>
+      <text x="110" y="38" font-family="Poppins,sans-serif" font-weight="900" font-size="38" fill="#FAF3E0">Blockchain &amp; Smart Contracts</text>
+      <text x="110" y="68" font-size="20" opacity="0.65">Tokenização, registros públicos.</text>
+    </g>
+    <g transform="translate(80 650)">
+      <circle cx="40" cy="40" r="36" fill="#C41E3A"/>
+      <text x="40" y="54" font-family="Poppins,sans-serif" font-weight="900" font-size="36" fill="#FAF3E0" text-anchor="middle">3</text>
+      <text x="110" y="38" font-family="Poppins,sans-serif" font-weight="900" font-size="38" fill="#FAF3E0">Legal Design Systems</text>
+      <text x="110" y="68" font-size="20" opacity="0.65">Hierarquia, plain language, visual reasoning.</text>
+    </g>
+    <g transform="translate(80 760)">
+      <circle cx="40" cy="40" r="36" fill="#F4C430"/>
+      <text x="40" y="54" font-family="Poppins,sans-serif" font-weight="900" font-size="36" fill="#1A1A1A" text-anchor="middle">4</text>
+      <text x="110" y="38" font-family="Poppins,sans-serif" font-weight="900" font-size="38" fill="#FAF3E0">Data Science &amp; Jurimetria</text>
+      <text x="110" y="68" font-size="20" opacity="0.65">Análise quantitativa de decisões.</text>
+    </g>
+    <g transform="translate(80 870)">
+      <circle cx="40" cy="40" r="36" fill="#FF6B35"/>
+      <text x="40" y="54" font-family="Poppins,sans-serif" font-weight="900" font-size="36" fill="#1A1A1A" text-anchor="middle">5</text>
+      <text x="110" y="38" font-family="Poppins,sans-serif" font-weight="900" font-size="38" fill="#FAF3E0">Cibersegurança &amp; Privacidade</text>
+      <text x="110" y="68" font-size="20" opacity="0.65">LGPD, GDPR, zero-trust legal.</text>
+    </g>
+  </g>
+  <rect x="80" y="1140" width="920" height="2" fill="#F4C430" opacity="0.2"/>
+  <text x="80" y="1190" font-family="JetBrains Mono,monospace" font-size="14" font-weight="700" letter-spacing="3" fill="#FF6B35">→ STACK iLAB · CONTINUA</text>
+  <text x="80" y="1280" font-family="Poppins,sans-serif" font-weight="900" font-size="30" fill="#F4C430">iLab<tspan fill="#FAF3E0" font-size="16" font-weight="400" dx="10">SANFRAN · FD-USP</tspan></text>
+</svg>

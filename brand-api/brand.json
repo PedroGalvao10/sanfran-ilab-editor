@@ -1,0 +1,355 @@
+{
+  "version": "1.0.0",
+  "lastUpdate": "2026-05-27",
+  "identity": {
+    "name": "SanFran iLab",
+    "fullName": "SanFran iLab — Faculdade de Direito da USP",
+    "handle": "@sanfran.ilab",
+    "tagline": "Inovação no Direito começa por dentro das salas de aula.",
+    "mission": "Conectar Direito, Tecnologia e Inovação por meio de pesquisa aplicada, formação prática e comunidade.",
+    "org": "FD-USP",
+    "domain": "ilab.sanfran.usp.br",
+    "founded": 2024
+  },
+  "colors": {
+    "primary": {
+      "yellow": "#F4C430",
+      "orange": "#FF6B35",
+      "red": "#C41E3A"
+    },
+    "neutrals": {
+      "black": "#1A1A1A",
+      "blackDeep": "#111111",
+      "warmWhite": "#FAF3E0",
+      "gray": "#777777"
+    },
+    "gradients": {
+      "primary": "linear-gradient(90deg, #F4C430, #FF6B35)",
+      "primaryVertical": "linear-gradient(180deg, #F4C430, #FF6B35)",
+      "warm": "linear-gradient(90deg, #FF6B35, #C41E3A)",
+      "full": "linear-gradient(90deg, #F4C430, #FF6B35, #C41E3A)"
+    },
+    "usage": {
+      "yellow": "destaque, CTAs claros, supertítulos em fundo escuro",
+      "orange": "categorias, badges, accents, hover states",
+      "red": "urgência, prazo, badges críticos, accents secundários",
+      "blackDeep": "fundos escuros, headers, contraste máximo",
+      "warmWhite": "fundos claros principais, cards, contraste sobre dark"
+    }
+  },
+  "typography": {
+    "fonts": {
+      "display": "Poppins",
+      "body": "Montserrat",
+      "mono": "JetBrains Mono"
+    },
+    "weights": {
+      "display": [
+        800,
+        900
+      ],
+      "body": [
+        400,
+        500,
+        700
+      ],
+      "mono": [
+        400,
+        700
+      ]
+    },
+    "usage": {
+      "Poppins": "títulos, headlines, números grandes — bold/black sempre",
+      "Montserrat": "corpo de texto, descrições, parágrafos",
+      "JetBrains Mono": "labels, badges, metadados, handles, microtipografia técnica"
+    },
+    "rules": [
+      "Poppins bold/black com letter-spacing negativo (-0.3 a -3px) em títulos",
+      "Montserrat 14-18px para corpo, 1.4-1.6 line-height",
+      "JetBrains Mono em UPPERCASE com letter-spacing 1.5-3px para labels"
+    ]
+  },
+  "designRules": {
+    "composition": [
+      "Use no máximo 3 a 5 decorações dinâmicas por layout para não poluir visualmente.",
+      "Mantenha a opacidade baixa (0.1 a 0.3) para elementos de fundo (como texturas, grid ou binário) para garantir a legibilidade do texto.",
+      "Use posicionamento (x, y) de forma estratégica, agrupando elementos ou usando cantoneiras para fechar o layout visualmente.",
+      "Aproveite as sombras projetadas (drop shadow) nas decorações 3D para gerar sensação de profundidade e destacar do fundo.",
+      "Evite sobrepor decorações complexas em cima de blocos de texto principais (Headlines e Body)."
+    ]
+  },
+  "voice": {
+    "tone": [
+      "direto",
+      "técnico",
+      "acessível",
+      "provocador (sem ser arrogante)",
+      "curioso"
+    ],
+    "persona": "Um laboratório universitário de inovação jurídica que fala com a comunidade acadêmica, profissionais do Direito e curiosos da intersecção Direito + Tecnologia. Tom de pesquisa séria, mas com pegada de comunidade ativa.",
+    "audience": [
+      "Estudantes de Direito da FD-USP e outras faculdades",
+      "Advogados e advogadas em escritórios e departamentos jurídicos",
+      "Professores e pesquisadores da área",
+      "Profissionais de legaltech e inovação"
+    ],
+    "dos": [
+      "Use termos jurídicos com precisão técnica",
+      "Cite dados, fontes e pesquisas sempre que possível",
+      "Seja específico (lei, foro, tribunal, prazo, número)",
+      "Equilibre rigor acadêmico com linguagem acessível",
+      "Use português brasileiro formal mas não engessado",
+      "Provoque reflexão crítica sobre Direito + IA",
+      "Destaque ações práticas e aplicáveis"
+    ],
+    "donts": [
+      "Não use clichês motivacionais ('seja sua melhor versão', 'transforme sua vida')",
+      "Não exagere em emojis (máximo 1-2 por post)",
+      "Não use gírias de redes sociais sem contexto",
+      "Não simplifique ao ponto de perder rigor técnico",
+      "Não prometa resultados absolutos ('você dominará IA em 5 dias')",
+      "Não use linguagem corporativa vazia ('sinergia', 'alavancar')",
+      "Não use hashtags excessivas (limite: 3-5 por post)"
+    ],
+    "examples": {
+      "good": [
+        "87% dos escritórios brasileiros já usam IA generativa em alguma etapa do fluxo jurídico. Dados do Estudo iLab 2026 (n=1.200).",
+        "Inovar no Direito não é abandonar a doutrina. É testar onde a doutrina ainda dialoga com a realidade.",
+        "Novo paper publicado: 'Vieses algorítmicos em decisões judiciais — uma análise empírica de 2.400 sentenças.' Link na bio."
+      ],
+      "bad": [
+        "🚀✨ Você está pronto para REVOLUCIONAR sua carreira jurídica?! 🔥💯",
+        "Descubra o segredo que TODOS advogados de sucesso usam!",
+        "Aprenda IA em 7 dias e fature 6 dígitos! 💸"
+      ]
+    }
+  },
+  "templates": {
+    "encontro": {
+      "name": "Encontro Presencial / Online",
+      "useCase": "Divulgar eventos, palestras, workshops",
+      "format": "9:16 (Story)",
+      "hasPhoto": true,
+      "fields": [
+        "logo",
+        "handle_top",
+        "badge",
+        "type",
+        "title",
+        "meta"
+      ]
+    },
+    "novidade": {
+      "name": "Novidades / Repost",
+      "useCase": "Compartilhar conteúdo de terceiros, repostagens",
+      "format": "9:16 (Story)",
+      "hasPhoto": true,
+      "fields": [
+        "label",
+        "logo_top",
+        "from_text",
+        "account",
+        "tags",
+        "brand_footer",
+        "handle_footer"
+      ]
+    },
+    "reel": {
+      "name": "Reel / Destaque",
+      "useCase": "Highlights, anúncios principais, destaques visuais",
+      "format": "9:16 (Story)",
+      "hasPhoto": true,
+      "fields": [
+        "logo",
+        "badge",
+        "supertitle",
+        "headline",
+        "cta",
+        "handle"
+      ]
+    },
+    "artigo": {
+      "name": "Artigo / Publicação",
+      "useCase": "Papers, posts de blog, publicações acadêmicas",
+      "format": "9:16 (Story)",
+      "hasPhoto": true,
+      "fields": [
+        "badge",
+        "brand",
+        "category",
+        "title",
+        "meta",
+        "tags",
+        "handle",
+        "cta"
+      ]
+    },
+    "pessoa": {
+      "name": "Destaque de Pessoa / Mentor",
+      "useCase": "Spotlight em membros, palestrantes, mentores",
+      "format": "9:16 (Story)",
+      "hasPhoto": true,
+      "fields": [
+        "badge",
+        "brand",
+        "label",
+        "name",
+        "role",
+        "social_user",
+        "handle",
+        "org"
+      ]
+    },
+    "dado": {
+      "name": "Estatística / Pesquisa",
+      "useCase": "Apresentar dados, estatísticas, resultados de pesquisa",
+      "format": "9:16 (Story)",
+      "hasPhoto": false,
+      "fields": [
+        "label",
+        "brand",
+        "headline",
+        "lead",
+        "stat1_cat",
+        "stat1_val",
+        "stat1_desc",
+        "stat2_cat",
+        "stat2_val",
+        "stat2_desc",
+        "source",
+        "source_meta",
+        "cta",
+        "handle",
+        "org"
+      ]
+    },
+    "chamada": {
+      "name": "Chamada / Inscrição",
+      "useCase": "Vagas, programas, mentorias, calls",
+      "format": "9:16 (Story)",
+      "hasPhoto": true,
+      "fields": [
+        "badge",
+        "brand",
+        "label",
+        "title",
+        "bullets",
+        "deadline_label",
+        "deadline_date",
+        "cta",
+        "handle",
+        "info"
+      ]
+    },
+    "dica": {
+      "name": "Dica Rápida / Micro-aprendizado",
+      "useCase": "Tips, ferramentas, atalhos, micro-aprendizados",
+      "format": "9:16 (Story)",
+      "hasPhoto": false,
+      "fields": [
+        "bignum",
+        "label",
+        "brand",
+        "supertitle",
+        "title",
+        "desc",
+        "tag",
+        "handle",
+        "swipe"
+      ]
+    },
+    "feed_carrossel": {
+      "name": "Feed Carrossel / Quadrado",
+      "useCase": "Slides aprofundados pro Instagram/LinkedIn",
+      "format": "1:1 (Post)",
+      "hasPhoto": false,
+      "fields": [
+        "badge_top",
+        "headline",
+        "body_text",
+        "page_indicator",
+        "brand_footer"
+      ]
+    },
+    "video_reel": {
+      "name": "Capa / Molde de Reel",
+      "useCase": "Thumbnail ou frame lateral para vídeos curtos",
+      "format": "9:16 (Vídeo)",
+      "hasPhoto": false,
+      "fields": [
+        "safe_title",
+        "speaker_badge",
+        "topic_chip"
+      ]
+    }
+  },
+  "hashtags": {
+    "core": [
+      "#iLab",
+      "#SanFraniLab",
+      "#FDUSP",
+      "#SanFran"
+    ],
+    "temas": [
+      "#DireitoEIA",
+      "#InovaçãoJurídica",
+      "#LegalTech",
+      "#DireitoEInovação",
+      "#JuridicalAI",
+      "#IAnoDireito"
+    ],
+    "eventos": [
+      "#EncontroiLab",
+      "#WorkshopiLab",
+      "#iLabConecta",
+      "#iLabSeminário"
+    ],
+    "conteudo": [
+      "#PesquisaiLab",
+      "#PublicaçãoiLab",
+      "#DicaiLab",
+      "#ArtigoiLab"
+    ],
+    "rules": [
+      "Use no mínimo 1 hashtag core",
+      "Combine 1 core + 1-2 temas + opcional 1 evento ou conteúdo",
+      "Máximo: 5 hashtags por post",
+      "Sem hashtags em CAIXA ALTA ou com emojis"
+    ]
+  },
+  "rules": {
+    "post": {
+      "caption": {
+        "minLength": 80,
+        "maxLength": 600,
+        "structure": "abertura provocadora → contexto/dados → reflexão ou CTA → hashtags"
+      },
+      "story": {
+        "title": {
+          "minWords": 2,
+          "maxWords": 8
+        },
+        "description": {
+          "maxWords": 25
+        }
+      },
+      "emojiPolicy": "Máximo 2 emojis por post. Preferir emojis técnicos (📊 📚 ⚖️ 🔍) sobre emocionais (❤️ 🔥 ✨)",
+      "linkPolicy": "Sempre 'link na bio' para externos; nunca encurtadores genéricos (bit.ly). Use canais oficiais."
+    },
+    "visual": {
+      "templates": "Use sempre um dos 8 templates oficiais. Não crie variações livres.",
+      "colors": "Apenas a paleta oficial. Não introduza cores novas.",
+      "logo": "Sempre 'SanFran iLab' com 'iLab' em gradient amarelo→laranja",
+      "photoQuality": "Mínimo 1080x1920px. Sem watermarks de terceiros. Sem texto na própria foto (texto vai no template)."
+    }
+  },
+  "assets": {
+    "logo": {
+      "wordmark": "SanFran iLab",
+      "iAccent": "iLab (em gradient)",
+      "monogram": "iL"
+    },
+    "elementos": "22 elementos visuais (PNG + SVG) disponíveis em /assets/elementos/",
+    "icones": "32 ícones (Lucide + Phosphor) em 4 estilos via Iconify"
+  }
+}

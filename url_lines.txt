@@ -1,0 +1,4 @@
+2428: const res = await fetch('http://localhost:3000/brand/assets', { signal: controller.signal });
+2769: const draftId = new URLSearchParams(window.location.search).get('draft');
+2776: window.history.replaceState(null, '', window.location.pathname + window.location.hash);
+2779: const res = await fetch(`http://localhost:3000/brand/drafts/${draftId}`);

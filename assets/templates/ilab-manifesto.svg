@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1350" width="1080" height="1350">
+  <defs>
+    <linearGradient id="g-ao" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#F4C430"/><stop offset="1" stop-color="#FF6B35"/>
+    </linearGradient>
+    <linearGradient id="g-aov" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#F4C430"/><stop offset="1" stop-color="#FF6B35"/>
+    </linearGradient>
+    <linearGradient id="g-or" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#FF6B35"/><stop offset="1" stop-color="#C41E3A"/>
+    </linearGradient>
+    <pattern id="dots-dark" x="0" y="0" width="32" height="32" patternUnits="userSpaceOnUse">
+      <circle cx="16" cy="16" r="1.1" fill="#F4C430" opacity="0.28"/>
+    </pattern>
+    <pattern id="dots-light" x="0" y="0" width="36" height="36" patternUnits="userSpaceOnUse">
+      <circle cx="18" cy="18" r="1.2" fill="#1A1A1A" opacity="0.07"/>
+    </pattern>
+  </defs>
+  <rect width="1080" height="1350" fill="#FAF3E0"/>
+  <rect x="0" y="780" width="1080" height="570" fill="#1A1A1A"/>
+  <polygon points="0,780 1080,780 1080,870" fill="#1A1A1A"/>
+  <polygon points="0,780 1080,780 0,870" fill="#FAF3E0"/>
+  <rect x="0" y="0" width="1080" height="8" fill="url(#g-ao)"/>
+
+  <text x="80" y="140" font-family="JetBrains Mono,monospace" font-size="14" font-weight="700" letter-spacing="4" fill="#C41E3A">MANIFESTO · A PRIMEIRA</text>
+
+  <!-- hero (warm half) -->
+  <g font-family="Poppins,sans-serif" font-weight="900" letter-spacing="-4">
+    <text x="80" y="320" font-size="118" fill="#1A1A1A">A primeira</text>
+    <text x="80" y="450" font-size="118" fill="url(#g-or)">Escola</text>
+  </g>
+  <text x="80" y="540" font-family="Poppins,sans-serif" font-weight="800" font-size="44" fill="#1A1A1A" letter-spacing="-1">de Inovação Jurídica</text>
+  <text x="80" y="594" font-family="Poppins,sans-serif" font-weight="800" font-size="44" fill="#1A1A1A" letter-spacing="-1">&amp; Startups da USP</text>
+  <rect x="80" y="640" width="100" height="3" fill="#FF6B35"/>
+
+  <!-- subtítulo (dark half) -->
+  <text x="80" y="950" font-family="JetBrains Mono,monospace" font-size="12" font-weight="700" letter-spacing="3" fill="#F4C430">PROPÓSITO</text>
+  <g font-family="Poppins,sans-serif" font-weight="800" letter-spacing="-1">
+    <text x="80" y="1015" font-size="36" fill="#FAF3E0">Formamos talentos</text>
+    <text x="80" y="1060" font-size="36" fill="#FAF3E0">que integram Direito,</text>
+    <text x="80" y="1105" font-size="36" fill="url(#g-ao)">Tecnologia e Inovação.</text>
+  </g>
+
+  <!-- ano selo no canto warm -->
+  <g transform="translate(840 200)">
+    <circle cx="80" cy="80" r="110" fill="url(#g-ao)" opacity="0.12"/>
+    <circle cx="80" cy="80" r="80" fill="url(#g-ao)"/>
+    <text x="80" y="74" font-family="JetBrains Mono,monospace" font-size="10" font-weight="700" letter-spacing="3" fill="#1A1A1A" text-anchor="middle">DESDE</text>
+    <text x="80" y="108" font-family="Poppins,sans-serif" font-weight="900" font-size="32" fill="#1A1A1A" text-anchor="middle">2026</text>
+  </g>
+
+  <g transform="translate(80 1260)">
+    <text font-family="Poppins,sans-serif" font-weight="900" font-size="28" letter-spacing="-1">
+      <tspan fill="#F4C430">i</tspan><tspan fill="#FAF3E0">Lab</tspan>
+    </text>
+    <text x="0" y="32" font-family="JetBrains Mono,monospace" font-size="11" font-weight="700" letter-spacing="3" fill="#FAF3E0" opacity=".55">SANFRAN · FD-USP</text>
+  </g>
+  <text x="1000" y="1292" font-family="JetBrains Mono,monospace" font-size="12" font-weight="700" letter-spacing="3" fill="#FF6B35" text-anchor="end">@SANFRANILAB</text>
+</svg>

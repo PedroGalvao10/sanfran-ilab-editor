@@ -1,0 +1,8 @@
+node_modules
+.env
+.DS_Store
+*.log
+.vercel
+test/test-render-*.png
+test/*.png
+data/drafts/*.json

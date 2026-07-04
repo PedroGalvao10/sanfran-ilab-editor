@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sistema Lex — Galeria de Expressões</title>
+<style>
+  :root {
+    --orange: #FF6B35;
+    --yellow: #F4C430;
+    --green: #2E7D32;
+    --red: #C41E3A;
+    --black: #1A1A1A;
+    --white: #FFFFFF;
+    --gray: #E8E8E8;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background: #111;
+    color: var(--white);
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  /* TOP BAR */
+  .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 24px;
+    background: #1A1A1A;
+    border-bottom: 1px solid #333;
+    flex-shrink: 0;
+    gap: 16px;
+  }
+  .topbar-title {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #999;
+  }
+  .counter {
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+    color: #666;
+  }
+  .cat-badge {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 4px 12px;
+    border-radius: 20px;
+    color: white;
+  }
+  .download-btn {
+    background: none;
+    border: 1px solid #444;
+    color: #aaa;
+    font-size: 12px;
+    padding: 6px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.5px;
+  }
+  .download-btn:hover { border-color: #fff; color: #fff; }
+
+  /* MAIN SLIDE AREA */
+  .slide-area {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .slide {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    padding: 32px;
+    text-align: center;
+    animation: fadeIn 0.25s ease;
+  }
+  .slide.active { display: flex; }
+  @keyframes fadeIn { from { opacity: 0; transform: scale(0.98); } to { opacity: 1; transform: scale(1); } }
+
+  /* COVER SLIDE */
+  .slide-cover {
+    background: linear-gradient(135deg, #1A1A1A 0%, #2a2a2a 100%);
+  }
+  .cover-logo {
+    font-size: 80px;
+    margin-bottom: 24px;
+  }
+  .cover-title {
+    font-size: 48px;
+    font-weight: 900;
+    letter-spacing: -1px;
+    color: var(--orange);
+    margin-bottom: 8px;
+  }
+  .cover-subtitle {
+    font-size: 16px;
+    color: #888;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 40px;
+  }
+  .cover-cats {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .cover-cat {
+    padding: 8px 20px;
+    border-radius: 24px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+
+  /* FOX SLIDES */
+  .slide-fox {
+    background: #F5F5F0;
+    color: var(--black);
+  }
+  .fox-img-wrap {
+    width: min(55vh, 480px);
+    height: min(55vh, 480px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: white;
+    border-radius: 24px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+    padding: 24px;
+    margin-bottom: 28px;
+    flex-shrink: 0;
+  }
+  .fox-img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    cursor: pointer;
+    transition: transform 0.2s;
+  }
+  .fox-img:hover { transform: scale(1.04); }
+  .fox-label {
+    font-size: 32px;
+    font-weight: 900;
+    color: var(--black);
+    margin-bottom: 6px;
+    letter-spacing: -0.5px;
+  }
+  .fox-use {
+    font-size: 13px;
+    color: #888;
+    max-width: 400px;
+    line-height: 1.6;
+  }
+
+  /* NAV */
+  .nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    padding: 16px 24px;
+    background: #1A1A1A;
+    border-top: 1px solid #333;
+    flex-shrink: 0;
+  }
+  .nav-btn {
+    background: none;
+    border: 1px solid #444;
+    color: #ccc;
+    font-size: 20px;
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+  }
+  .nav-btn:hover:not(:disabled) { border-color: #fff; color: #fff; background: #333; }
+  .nav-btn:disabled { opacity: 0.25; cursor: default; }
+
+  /* THUMBNAIL STRIP */
+  .thumb-strip {
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    padding: 0 8px;
+    align-items: center;
+    max-width: calc(100vw - 200px);
+    scrollbar-width: none;
+  }
+  .thumb-strip::-webkit-scrollbar { display: none; }
+  .thumb {
+    width: 36px;
+    height: 36px;
+    border-radius: 6px;
+    border: 2px solid transparent;
+    cursor: pointer;
+    flex-shrink: 0;
+    background: #2a2a2a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 8px;
+    color: #666;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+  .thumb.active { border-color: var(--orange); }
+  .thumb img { width: 100%; height: 100%; object-fit: contain; }
+
+  /* TOAST */
+  .toast {
+    position: fixed;
+    bottom: 90px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: #222;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 13px;
+    opacity: 0;
+    transition: all 0.3s;
+    pointer-events: none;
+    z-index: 999;
+    white-space: nowrap;
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <a href="index.html#lex" style="color:#666;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;text-decoration:none;flex-shrink:0;transition:color .2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#666'">← Brand Book</a>
+  <span class="topbar-title">San Francisco iLab — Sistema Lex</span>
+  <span id="cat-badge" class="cat-badge" style="background:#FF6B35;">Capa</span>
+  <span class="counter"><span id="cur">1</span> / <span id="tot">41</span></span>
+  <button class="download-btn" onclick="downloadCurrent()">⬇ Baixar PNG</button>
+</div>
+
+<!-- SLIDES -->
+<div class="slide-area">
+
+  <!-- SLIDE 0: COVER -->
+  <div class="slide slide-cover active" data-idx="0" data-cat="" data-label="Capa">
+    <div class="cover-logo">🦊</div>
+    <div class="cover-title">Sistema Lex</div>
+    <div class="cover-subtitle">Galeria de Expressões · 40 variações</div>
+    <div class="cover-cats">
+      <span class="cover-cat" style="background:#FF6B35;">💛 Empatia · 12</span>
+      <span class="cover-cat" style="background:#F4C430;color:#1A1A1A;">🧠 Intelecto · 10</span>
+      <span class="cover-cat" style="background:#2E7D32;">⚙️ Execução · 10</span>
+      <span class="cover-cat" style="background:#C41E3A;">⚖️ Astúcia · 8</span>
+    </div>
+  </div>
+
+  <!-- EMPATIA -->
+  <div class="slide slide-fox" data-idx="1" data-cat="empatia" data-label="Acolhimento" data-slug="acolhimento" data-use="Atendimento, onboarding, primeiros contatos">
+    <div class="fox-img-wrap"><img class="fox-img" src="assets/lex/acolhimento.png" alt="Acolhimento" onclick="downloadCurrent()"></div>
+    <div class="fox-label">Acolhimento</div>
+    <div class="fox-use">Atendimento, onboarding, primeiros contatos</div>
+  </div>
+  <div class="slide slide-fox" data-idx="2" data-cat="empatia" data-label="Olá" data-slug="ola" data-use="Social media, saudações, apresentações">
+    <div class="fox-img-wrap"><img class="fox-img" src="assets/lex/ola.png" alt="Olá" onclick="downloadCurrent()"></div>
+    <div class="fox-label">Olá</div>
+    <div class="fox-use">Social media, saudações, apresentações</div>
+  </div>
+  <div class="slide slide-fox" data-idx="3" data-cat="empatia" data-label="Aprovação" data-slug="aprovacao" data-use="Confirmações, feedback positivo">
+    <div class="fox-img-wrap"><img class="fox-img" src="assets/lex/aprovacao.png" alt="Aprovação" onclick="downloadCurrent()"></div>
+    <div class="fox-label">Aprovação</div>
+    <div class="fox-use">Confirmações, feedback positivo</div>
+  </div>
+  <div class="slide slide-fox" data-idx="4" data-cat="empatia" data-label="Gratidão" data-slug="gratidao" data-use="Agradecimentos, encerramento de atendimento">
+    <div class="fox-img-wrap"><img class="fox-img" src="assets/lex/gratidao.png" alt="Gratidão" onclick="downloadCurrent()"></div>
+    <div class="fox-label">Gratidão</div>
+    <div class="fox-use">Agradecimentos, encerramento de atendimento</div>
+  </div>
+  <div class="slide slide-fox" data-idx="5" data-cat="empatia" data-label="Empolgação" data-slug="empolgacao" data-use="Lançamentos, novidades, celebrações">
+    <div class="fox-img-wrap"><img class="fox-img" src="assets/lex/empolgacao.png" alt="Empolgação" onclick="downloadCurrent()"></div>
+    <div class="fox-label">Empolgação</div>
+    <div class="fox-use">Lançamentos, novidades, celebrações</div>
+  </div>
+  <div class="slide slide-fox" data-idx="6" data-cat="empatia" data-label="Surpresa" data-slug="surpresa" data-use="Reveals, anúncios inesperados">
+    <div class="fox-img-wrap"><img class="fox-img" src="assets/lex/surpresa.png" alt="Surpresa" onclick="downloadCurrent()"></div>
+    <div class="fox-label">Surpresa</div>
+    <div class="fox-use">Reveals, anúncios inesperados</div>
+  </div>
+  <div class="slide slide-fox" data-idx="7" data-cat="empatia" data-label="Euforia" data-slug="euforia" data-use="Conquistas, marcos, vitórias">
+    <div class="fox-img-wrap"><img class="fox-img" src="assets/lex/euforia.png" alt="Euforia" onclick="downloadCurrent()"></div>
+    <div class="fox-label">Euforia</div>
+    <div class="fox-use">Conquistas, marcos, vitórias</div>
+  </div>
+  <div class="slide slide-fox" data-idx="8" data-cat="empatia" data-label="Dor de Cabeça" data-slug="dor-de-cabeca" data-use="Stress, problemas complexos">
+    <div class="fox-img-wrap"><img class="fox-img" src="assets/lex/dor-de-cabeca.png" alt="Dor de Cabeça" onclick="downloadCurrent()"></div>
+    <div class="fox-label">Dor de Cabeça</div>
+    <div class="fox-use">Stress, problemas complexos</div>
+  </div>
+  <div class="slide slide-fox" data-idx="9" data-cat="empatia" data-label="Exaustão" data-slug="exaustao" data-use="Burnout, fim de ciclo intenso">
+    <div class="fox-img-wrap"><img class="fox-img" src="assets/lex/exaustao.png" alt="Exaustão" onclick="downloadCurrent()"></div>
+    <div class="fox-label">Exaustão</div>
+    <div class="fox-use">Burnout, fim de ciclo intenso</div>
+  </div>
+  <div class="slide slide-fox" data-idx="10" data-cat="empatia" data-label="Tristeza" data-slug="tristeza" data-use="Empatia em momentos difíceis, humanização">
+    <div class="fox-img-wrap"><img class="fox-img" src="assets/lex/tristeza.png" alt="Tristeza" onclick="downloadCurrent()"></div>
+    <div class="fox-label">Tristeza</div>
+    <div class="fox-use">Empatia em momentos difíceis, humanização</div>
+  </div>
+  <div class="slide slide-fox" data-idx="11" data-cat="empatia" data-label="Frustração" data-slug="frustracao" data-use="Obstáculos, problemas recorrentes">
+    <div class="fox-img-wrap"><img class="fox-img" src="assets/lex/frustracao.png" alt="Frustração" onclick="downloadCurrent()"></div>
+    <div class="fox-label">Frustração</div>
+    <div class="fox-use">Obstáculos, problemas recorrentes</div>
+  </div>
+  <div class="slide slide-fox" data-idx="12" data-cat="empatia" data-label="Pausa" data-slug="pausa" data-use="Intervalos, autocuidado, bem-estar">
+    <div class="fox-img-wrap"><img class="fox-img" src="assets/lex/pausa.png" alt="Pausa" onclick="downloadCurrent()"></div>
+    <div class="fox-label">Pausa</div>
+    <div class="fox-use">Intervalos, autocuidado, bem-estar</div>
+  </div>
+
+  <!-- INTELECTO -->
+  <div class="slide slide-fox" data-idx="13" data-cat="intelecto" data-label="Ideia Brilhante" data-slug="ideia-brilhante" data-use="Lançamento de ideias, inovação">
+    <div class="fox-img-wrap"><img class="fox-img" src="assets/lex/ideia-brilhante.png" alt="Ideia Brilhante" onclick="downloadCurrent()"></div>
+    <div class="fox-label">Ideia Brilhante</div>
+    <div class="fox-use">Lançamento de ideias, inovação</div>
+  </div>
+  <div class="slide slide-fox" data-idx="14" data-cat="intelecto" data-label="Estudioso" data-slug="estudioso" data-use="Conteúdo educacional, cursos, pesquisa">
+    <div class="fox-img-wrap"><img class="fox-img" src="assets/lex/estudioso.png" alt="Estudioso" onclick="downloadCurrent()"></div>
+    <div class="fox-label">Estudioso</div>
+    <div class="fox-use">Conteúdo educacional, cursos, pesquisa</div>
+  </div>
+  <div class="slide slide-fox" data-idx="15" data-cat="intelecto" data-label="Analítico" data-slug="analitico" data-use="Dados, relatórios, diagnósticos">
+    <div class="fox-img-wrap"><img class="fox-img" src="assets/lex/analitico.png" alt="Analítico" onclick="downloadCurrent()"></div>
+    <div class="fox-label">Analítico</div>
+    <div class="fox-use">Dados, relatórios, diagnósticos</div>
+  </div>
+  <div class="slide slide-fox" data-idx="16" data-cat="intelecto" data-label="Anotações" data-slug="anotacoes" data-use="Tutoriais, how-tos, guias">
+    <div class="fox-img-wrap"><img class="fox-img" src="assets/lex/anotacoes.png" alt="Anotações" onclick="downloadCurrent()"></div>
+    <div class="fox-label">Anotações</div>
+    <div class="fox-use">Tutoriais, how-tos, guias</div>
+  </div>
+  <div class="slide slide-fox" data-idx="17" data-cat="intelecto" data-label="Investigação" data-slug="investigacao" data-use="Due diligence, auditoria, discovery">
+    <div class="fox-img-wrap"><img class="fox-img" src="assets/lex/investigacao.png" alt="Investigação" onclick="downloadCurrent()"></div>
+    <div class="fox-label">Investigação</div>
+    <div class="fox-use">Due diligence, auditoria, discovery</div>
+  </div>
+  <div class="slide slide-fox" data-idx="18" data-cat="intelecto" data-label="Didática" data-slug="didatica" data-use="Aulas, workshops, mentoria">
+    <div class="fox-img-wrap"><img class="fox-img" src="assets/lex/didatica.png" alt="Didática" onclick="downloadCurrent()"></div>
+    <div class="fox-label">Didática</div>
+    <div class="fox-use">Aulas, workshops, mentoria</div>
+  </div>
+  <div class="slide slide-fox" data-idx="19" data-cat="intelecto" data-label="Apresentação" data-slug="apresentacao" data-use="Apresentações corporativas, demos">
+    <div class="fox-img-wrap"><img class="fox-img" src="assets/lex/apresentacao.png" alt="Apresentação" onclick="downloadCurrent()"></div>
+    <div class="fox-label">Apresentação</div>
+    <div class="fox-use">Apresentações corporativas, demos</div>
+  </div>
+  <div class="slide slide-fox" data-idx="20" data-cat="intelecto" data-label="Discurso" data-slug="discurso" data-use="Eventos, keynotes, palestras">
+    <div class="fox-img-wrap"><img class="fox-img" src="assets/lex/discurso.png" alt="Discurso" onclick="downloadCurrent()"></div>
+    <div class="fox-label">Discurso</div>
+    <div class="fox-use">Eventos, keynotes, palestras</div>
+  </div>
+  <div class="slide slide-fox" data-idx="21" data-cat="intelecto" data-label="Mentoria" data-slug="mentoria" data-use="Programas de mentoria, coaching">
+    <div class="fox-img-wrap"><img class="fox-img" src="assets/lex/mentoria.png" alt="Mentoria" onclick="downloadCurrent()"></div>
+    <div class="fox-label">Mentoria</div>
+    <div class="fox-use">Programas de mentoria, coaching</div>
+  </div>
+  <div class="slide slide-fox" data-idx="22" data-cat="intelecto" data-label="Pesquisa" data-slug="pesquisa" data-use="Relatórios de pesquisa, publicações">
+    <div class="fox-img-wrap"><img class="fox-img" src="assets/lex/pesquisa.png" alt="Pesquisa" onclick="downloadCurrent()"></div>
+    <div class="fox-label">Pesquisa</div>
+    <div class="fox-use">Relatórios de pesquisa, publicações</div>
+  </div>
+
+  <!-- EXECUÇÃO -->
+  <div class="slide slide-fox" data-idx="23" data-cat="execucao" data-label="Construtor" data-slug="construtor" data-use="Desenvolvimento de produto, engenharia">
+    <div class="fox-img-wrap"><img class="fox-img" src="assets/lex/construtor.png" alt="Construtor" onclick="downloadCurrent()"></div>
+    <div class="fox-label">Construtor</div>
+    <div class="fox-use">Desenvolvimento de produto, engenharia</div>
+  </div>
+  <div class="slide slide-fox" data-idx="24" data-cat="execucao" data-label="Mão na Massa" data-slug="mao-na-massa" data-use="Sprints, hackathons, implementação">
+    <div class="fox-img-wrap"><img class="fox-img" src="assets/lex/mao-na-massa.png" alt="Mão na Massa" onclick="downloadCurrent()"></div>
+    <div class="fox-label">Mão na Massa</div>
+    <div class="fox-use">Sprints, hackathons, implementação</div>
+  </div>
+  <div class="slide slide-fox" data-idx="25" data-cat="execucao" data-label="Multitarefa" data-slug="multitarefa" data-use="Operações complexas, gestão de projetos">
+    <div class="fox-img-wrap"><img class="fox-img" src="assets/lex/multitarefa.png" alt="Multitarefa" onclick="downloadCurrent()"></div>
+    <div class="fox-label">Multitarefa</div>
+    <div class="fox-use">Operações complexas, gestão de projetos</div>
+  </div>
+  <div class="slide slide-fox" data-idx="26" data-cat="execucao" data-label="Prototipando" data-slug="prototipando" data-use="Design thinking, prototipação ágil">
+    <div class="fox-img-wrap"><img class="fox-img" src="assets/lex/prototipando.png" alt="Prototipando" onclick="downloadCurrent()"></div>
+    <div class="fox-label">Prototipando</div>
+    <div class="fox-use">Design thinking, prototipação ágil</div>
+  </div>
+  <div class="slide slide-fox" data-idx="27" data-cat="execucao" data-label="Confusão Técnica" data-slug="confusao-tecnica" data-use="Debugging, problemas de stack">
+    <div class="fox-img-wrap"><img class="fox-img" src="assets/lex/confusao-tecnica.png" alt="Confusão Técnica" onclick="downloadCurrent()"></div>
+    <div class="fox-label">Confusão Técnica</div>
+    <div class="fox-use">Debugging, problemas de stack</div>
+  </div>
+  <div class="slide slide-fox" data-idx="28" data-cat="execucao" data-label="Perdido" data-slug="perdido" data-use="Onboarding difícil, falta de documentação">
+    <div class="fox-img-wrap"><img class="fox-img" src="assets/lex/perdido.png" alt="Perdido" onclick="downloadCurrent()"></div>
+    <div class="fox-label">Perdido</div>
+    <div class="fox-use">Onboarding difícil, falta de documentação</div>
+  </div>
+  <div class="slide slide-fox" data-idx="29" data-cat="execucao" data-label="Erro 404" data-slug="erro-404" data-use="Páginas de erro, comunicados de incidente">
+    <div class="fox-img-wrap"><img class="fox-img" src="assets/lex/erro-404.png" alt="Erro 404" onclick="downloadCurrent()"></div>
+    <div class="fox-label">Erro 404</div>
+    <div class="fox-use">Páginas de erro, comunicados de incidente</div>
+  </div>
+  <div class="slide slide-fox" data-idx="30" data-cat="execucao" data-label="Bloqueio" data-slug="bloqueio" data-use="Blockers, dependências críticas">
+    <div class="fox-img-wrap"><img class="fox-img" src="assets/lex/bloqueio.png" alt="Bloqueio" onclick="downloadCurrent()"></div>
+    <div class="fox-label">Bloqueio</div>
+    <div class="fox-use">Blockers, dependências críticas</div>
+  </div>
+  <div class="slide slide-fox" data-idx="31" data-cat="execucao" data-label="Conectado" data-slug="conectado" data-use="Integrações de sistema, APIs, conectividade">
+    <div class="fox-img-wrap"><img class="fox-img" src="assets/lex/conectado.png" alt="Conectado" onclick="downloadCurrent()"></div>
+    <div class="fox-label">Conectado</div>
+    <div class="fox-use">Integrações de sistema, APIs, conectividade</div>
+  </div>
+  <div class="slide slide-fox" data-idx="32" data-cat="execucao" data-label="Mobile" data-slug="mobile" data-use="Apps mobile, comunicação digital">
+    <div class="fox-img-wrap"><img class="fox-img" src="assets/lex/mobile.png" alt="Mobile" onclick="downloadCurrent()"></div>
+    <div class="fox-label">Mobile</div>
+    <div class="fox-use">Apps mobile, comunicação digital</div>
+  </div>
+
+  <!-- ASTÚCIA -->
+  <div class="slide slide-fox" data-idx="33" data-cat="astucia" data-label="Astúcia" data-slug="astucia" data-use="Conteúdo jurídico, argumentação">
+    <div class="fox-img-wrap"><img class="fox-img" src="assets/lex/astucia.png" alt="Astúcia" onclick="downloadCurrent()"></div>
+    <div class="fox-label">Astúcia</div>
+    <div class="fox-use">Conteúdo jurídico, argumentação</div>
+  </div>
+  <div class="slide slide-fox" data-idx="34" data-cat="astucia" data-label="Negócio Fechado" data-slug="negocio-fechado" data-use="Fechamento de contratos, vitórias jurídicas">
+    <div class="fox-img-wrap"><img class="fox-img" src="assets/lex/negocio-fechado.png" alt="Negócio Fechado" onclick="downloadCurrent()"></div>
+    <div class="fox-label">Negócio Fechado</div>
+    <div class="fox-use">Fechamento de contratos, vitórias jurídicas</div>
+  </div>
+  <div class="slide slide-fox" data-idx="35" data-cat="astucia" data-label="Segredo" data-slug="segredo" data-use="NDA, informações privilegiadas">
+    <div class="fox-img-wrap"><img class="fox-img" src="assets/lex/segredo.png" alt="Segredo" onclick="downloadCurrent()"></div>
+    <div class="fox-label">Segredo</div>
+    <div class="fox-use">NDA, informações privilegiadas</div>
+  </div>
+  <div class="slide slide-fox" data-idx="36" data-cat="astucia" data-label="Confiança" data-slug="confianca" data-use="Posicionamento de marca, depoimentos">
+    <div class="fox-img-wrap"><img class="fox-img" src="assets/lex/confianca.png" alt="Confiança" onclick="downloadCurrent()"></div>
+    <div class="fox-label">Confiança</div>
+    <div class="fox-use">Posicionamento de marca, depoimentos</div>
+  </div>
+  <div class="slide slide-fox" data-idx="37" data-cat="astucia" data-label="Veredito" data-slug="veredito" data-use="Resultados de processos, decisões definitivas">
+    <div class="fox-img-wrap"><img class="fox-img" src="assets/lex/veredito.png" alt="Veredito" onclick="downloadCurrent()"></div>
+    <div class="fox-label">Veredito</div>
+    <div class="fox-use">Resultados de processos, decisões definitivas</div>
+  </div>
+  <div class="slide slide-fox" data-idx="38" data-cat="astucia" data-label="Equilíbrio" data-slug="equilibrio" data-use="Mediação, análise de riscos">
+    <div class="fox-img-wrap"><img class="fox-img" src="assets/lex/equilibrio.png" alt="Equilíbrio" onclick="downloadCurrent()"></div>
+    <div class="fox-label">Equilíbrio</div>
+    <div class="fox-use">Mediação, análise de riscos</div>
+  </div>
+  <div class="slide slide-fox" data-idx="39" data-cat="astucia" data-label="Objeção" data-slug="objecao" data-use="Debates jurídicos, contrapontos">
+    <div class="fox-img-wrap"><img class="fox-img" src="assets/lex/objecao.png" alt="Objeção" onclick="downloadCurrent()"></div>
+    <div class="fox-label">Objeção</div>
+    <div class="fox-use">Debates jurídicos, contrapontos</div>
+  </div>
+  <div class="slide slide-fox" data-idx="40" data-cat="astucia" data-label="Solenidade" data-slug="solenidade" data-use="Eventos formais, comunicados oficiais">
+    <div class="fox-img-wrap"><img class="fox-img" src="assets/lex/solenidade.png" alt="Solenidade" onclick="downloadCurrent()"></div>
+    <div class="fox-label">Solenidade</div>
+    <div class="fox-use">Eventos formais, comunicados oficiais</div>
+  </div>
+
+</div><!-- /slide-area -->
+
+<!-- NAV BAR -->
+<div class="nav">
+  <button class="nav-btn" id="btn-prev" onclick="go(-1)" disabled>&#8592;</button>
+  <div class="thumb-strip" id="thumb-strip"></div>
+  <button class="nav-btn" id="btn-next" onclick="go(1)">&#8594;</button>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const CAT_COLORS = { empatia:'#FF6B35', intelecto:'#F4C430', execucao:'#2E7D32', astucia:'#C41E3A', '':'#555' };
+const CAT_NAMES  = { empatia:'Empatia', intelecto:'Intelecto', execucao:'Execução', astucia:'Astúcia', '':'Capa' };
+const slides = Array.from(document.querySelectorAll('.slide'));
+let cur = 0;
+
+// Build thumbnails
+const strip = document.getElementById('thumb-strip');
+slides.forEach((sl, i) => {
+  const t = document.createElement('div');
+  t.className = 'thumb' + (i === 0 ? ' active' : '');
+  const cat = sl.dataset.cat;
+  t.style.borderColor = i === 0 ? '#FF6B35' : 'transparent';
+  const slug = sl.dataset.slug;
+  if (slug) {
+    const img = document.createElement('img');
+    img.src = `assets/lex/${slug}.png`;
+    t.appendChild(img);
+  } else {
+    t.textContent = '🦊';
+    t.style.fontSize = '18px';
+  }
+  t.title = sl.dataset.label || '';
+  t.onclick = () => goTo(i);
+  strip.appendChild(t);
+});
+
+function updateUI() {
+  const sl = slides[cur];
+  const cat = sl.dataset.cat || '';
+  const color = CAT_COLORS[cat];
+  document.getElementById('cur').textContent = cur + 1;
+  document.getElementById('cat-badge').textContent = CAT_NAMES[cat];
+  document.getElementById('cat-badge').style.background = color;
+  document.getElementById('cat-badge').style.color = cat === 'intelecto' ? '#1A1A1A' : '#fff';
+  document.getElementById('btn-prev').disabled = cur === 0;
+  document.getElementById('btn-next').disabled = cur === slides.length - 1;
+  // thumbnails
+  document.querySelectorAll('.thumb').forEach((t, i) => {
+    t.classList.toggle('active', i === cur);
+    t.style.borderColor = i === cur ? color : 'transparent';
+  });
+  // scroll thumb into view
+  strip.querySelectorAll('.thumb')[cur]?.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+}
+
+function goTo(idx) {
+  slides[cur].classList.remove('active');
+  cur = Math.max(0, Math.min(slides.length - 1, idx));
+  slides[cur].classList.add('active');
+  updateUI();
+}
+
+function go(dir) { goTo(cur + dir); }
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown') go(1);
+  if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   go(-1);
+});
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+function downloadCurrent() {
+  const sl = slides[cur];
+  const slug = sl.dataset.slug;
+  if (!slug) { showToast('Slide de capa — sem imagem para baixar'); return; }
+  const img = sl.querySelector('img');
+  const label = sl.dataset.label || slug;
+  const canvas = document.createElement('canvas');
+  const SIZE = 1024;
+  canvas.width = SIZE;
+  canvas.height = SIZE;
+  const ctx = canvas.getContext('2d');
+  const proxy = new Image();
+  proxy.crossOrigin = 'anonymous';
+  proxy.onload = () => {
+    ctx.clearRect(0, 0, SIZE, SIZE);
+    const scale = Math.min(SIZE / proxy.naturalWidth, SIZE / proxy.naturalHeight);
+    const w = proxy.naturalWidth * scale;
+    const h = proxy.naturalHeight * scale;
+    ctx.drawImage(proxy, (SIZE - w) / 2, (SIZE - h) / 2, w, h);
+    canvas.toBlob(blob => {
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `lex-${slug}.png`;
+      a.click();
+      showToast(`✓ Baixado: lex-${slug}.png`);
+    }, 'image/png');
+  };
+  proxy.onerror = () => {
+    window.open(`assets/lex/${slug}.png`, '_blank');
+    showToast('Abrindo em nova aba (CORS local)');
+  };
+  proxy.src = img.src;
+}
+
+// Suporte a ?slug= ou ?slide= vindos do brand book
+(function(){
+  var params = new URLSearchParams(window.location.search);
+  var slug = params.get('slug');
+  var slideParam = params.get('slide');
+  if(slug){
+    var target = slides.findIndex(function(s){ return s.dataset.slug === slug; });
+    if(target > 0) goTo(target);
+  } else if(slideParam){
+    var n = parseInt(slideParam, 10);
+    if(!isNaN(n) && n >= 0 && n < slides.length) goTo(n);
+  }
+})();
+
+updateUI();
+</script>
+</body>
+</html>
