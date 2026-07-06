@@ -773,6 +773,29 @@
         @media (max-width: 480px) {
             .sidebar-left, .sidebar-right { width: 92vw; }
         }
+
+        /* Indicador de salvamento automático (topbar) */
+        #save-indicator {
+            font-family: var(--font-mono); font-size: 10px; color: var(--text-muted);
+            white-space: nowrap; margin-right: 8px; user-select: none; flex-shrink: 0;
+        }
+        #save-indicator.saved { color: #6BCB77; }
+        #save-indicator.error { color: var(--brand-orange, #FF6B35); }
+        @media (max-width: 900px) { #save-indicator { display: none; } }
+
+        /* Banner de recuperação de sessão */
+        #recovery-banner {
+            position: fixed; top: calc(var(--topbar-height, 52px) + 10px); left: 50%; transform: translateX(-50%);
+            background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: 10px;
+            padding: 10px 14px; display: flex; align-items: center; gap: 12px;
+            box-shadow: 0 16px 40px rgba(0,0,0,0.5); z-index: 10001; font-size: 12px; color: var(--text-primary);
+            max-width: 92vw;
+        }
+        #recovery-banner button {
+            font-family: var(--font-mono); font-size: 11px; padding: 6px 12px; border-radius: 6px;
+            cursor: pointer; border: 1px solid var(--border-color); background: transparent; color: var(--text-primary);
+        }
+        #recovery-banner button.primary { background: var(--brand-yellow); border-color: var(--brand-yellow); color: #111; font-weight: 700; }
     </style>
 </head>
 <body>
@@ -839,12 +862,21 @@
             <button class="btn-icon" id="btn-duplicate" title="Duplicate (Ctrl+D)">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
             </button>
+            <div class="topbar-divider"></div>
+            <button class="btn-icon" id="btn-save-project" title="Salvar projeto como arquivo (.json)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+            </button>
+            <button class="btn-icon" id="btn-open-project" title="Abrir projeto (.json)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+            </button>
+            <input type="file" id="project-file-input" accept=".json,application/json" style="display:none;">
         </div>
+        <span id="save-indicator" title="Salvamento automático no navegador"></span>
         <!-- Botão "⋯" — só visível no breakpoint mobile, abre o menu acima -->
         <button class="btn-icon mobile-only" id="btn-more-actions" title="Mais ações">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/></svg>
         </button>
-        <button class="btn-export" id="btn-export-open">EXPORTAR</button>
+        <button class="btn-export" id="btn-export-open" title="Exportar PNG / JPG / PDF">EXPORTAR</button>
     </div>
 
     <!-- Toggle do painel direito (Inspetor) — só visível no breakpoint mobile/tablet -->
@@ -934,6 +966,8 @@
                 <p>Upload de imagem ou SVG</p>
                 <input type="file" id="file-upload" accept="image/*,.svg" multiple>
             </label>
+            <label class="brand-btn" for="vectorize-upload" style="display:block; text-align:center; cursor:pointer; margin:8px 0 12px 0;" title="Sobe um design pronto (PNG/JPG) e ele vira camadas editáveis: textos reais + formas vetorizadas">⚡ Importar design (vetorizar)</label>
+            <input type="file" id="vectorize-upload" accept="image/png,image/jpeg,image/webp" style="display:none;">
             <div id="assets-container"><p style="text-align:center;color:var(--text-muted);font-size:11px;padding:20px;">Carregando assets...</p></div>
         </div>
 
@@ -1027,6 +1061,37 @@
             <input type="range" id="export-quality" min="0.5" max="1" step="0.05" value="0.92" style="flex:1;">
         </div>
         <button class="modal-btn" id="export-go">BAIXAR</button>
+    </div>
+</div>
+
+<!-- ═══════ VECTORIZE IMPORT MODAL ═══════ -->
+<div class="modal-overlay" id="vectorize-modal">
+    <div class="modal" style="position:relative; width: 460px; max-width: 92%;">
+        <button class="modal-close" id="vec-close">&times;</button>
+        <h3>Importar design em camadas</h3>
+        <div id="vec-preview-wrap" style="max-height:180px; overflow:hidden; border-radius:8px; border:1px solid var(--border-color); margin-bottom:14px; display:flex; align-items:center; justify-content:center; background:#111;">
+            <img id="vec-preview" style="max-width:100%; max-height:180px; display:block;" alt="Preview do design">
+        </div>
+        <div class="modal-row">
+            <label title="Quantas cores distintas separar em camadas vetoriais">Cores</label>
+            <input type="range" id="vec-colors" min="3" max="16" step="1" value="8" style="flex:1;">
+            <span id="vec-colors-val" style="font-family:var(--font-mono); font-size:11px; width:20px; text-align:right;">8</span>
+        </div>
+        <div class="modal-row">
+            <label style="display:flex; align-items:center; gap:8px; cursor:pointer;">
+                <input type="checkbox" id="vec-ocr" checked>
+                Detectar textos (viram camadas de texto editáveis)
+            </label>
+        </div>
+        <p style="font-size:11px; color:var(--text-muted); line-height:1.5; margin: 10px 0 14px 0;">
+            Formas e fundos viram vetores com cor trocável; textos viram texto de verdade (fonte aproximada pra fonte da marca).
+            Fotografias viram arte posterizada — pra manter a foto intacta, use "Manter como foto".
+        </p>
+        <div id="vec-status" style="font-family:var(--font-mono); font-size:11px; color:var(--brand-yellow); min-height:16px; margin-bottom:10px;"></div>
+        <div style="display:flex; gap:10px;">
+            <button class="modal-btn" id="vec-go" style="flex:2;">VETORIZAR EM CAMADAS</button>
+            <button class="modal-btn" id="vec-as-photo" style="flex:1; background:transparent; border:1px solid var(--border-color); color:var(--text-primary);">Manter como foto</button>
+        </div>
     </div>
 </div>
 
@@ -1155,6 +1220,7 @@ function saveHistory(actionName = "Alteração") {
     if (history.length > MAX_HISTORY) history.shift();
     historyIndex = history.length - 1;
     if (typeof renderHistoryPanel === 'function') renderHistoryPanel();
+    if (typeof scheduleAutosave === 'function') scheduleAutosave();
 }
 
 function undo() {
@@ -1166,6 +1232,7 @@ function undo() {
     ensureActiveArtboardValid();
     render();
     if (typeof renderHistoryPanel === 'function') renderHistoryPanel();
+    if (typeof scheduleAutosave === 'function') scheduleAutosave();
 }
 
 function redo() {
@@ -1177,6 +1244,7 @@ function redo() {
     ensureActiveArtboardValid();
     render();
     if (typeof renderHistoryPanel === 'function') renderHistoryPanel();
+    if (typeof scheduleAutosave === 'function') scheduleAutosave();
 }
 
 // ── Helpers ──
@@ -1414,6 +1482,20 @@ function renderLayersToDOM(layers, parentEl) {
             if (layer.isMask && !isCropping) el.classList.add('masked-container');
             if (layer.isCircle) el.style.borderRadius = '50%';
             else if (layer.borderRadius) el.style.borderRadius = layer.borderRadius + 'px';
+        } else if (layer.type === 'svg') {
+            // SVG inline: content é o markup <svg> completo. O wrapper .layer-el
+            // dita posição/tamanho; o svg interno estica pra 100%.
+            el.innerHTML = layer.content || '';
+            const svgEl = el.querySelector('svg');
+            if (svgEl) {
+                svgEl.setAttribute('width', '100%');
+                svgEl.setAttribute('height', '100%');
+                svgEl.style.display = 'block';
+                if (!svgEl.getAttribute('preserveAspectRatio')) svgEl.setAttribute('preserveAspectRatio', 'none');
+                // Camadas monocromáticas (geradas pela vetorização) usam fill="currentColor"
+                // nos paths — a cor vem de layer.fill via CSS color, trocável no inspetor.
+                if (layer.svgMono) svgEl.style.color = layer.fill || '#1A1A1A';
+            }
         }
 
         // Mouse interaction on layer
@@ -1746,7 +1828,7 @@ function renderInspector() {
     </div>`;
 
     // Appearance
-    if (['rect','ellipse','line'].includes(layer.type)) {
+    if (['rect','ellipse','line'].includes(layer.type) || (layer.type === 'svg' && layer.svgMono)) {
         html += `<div class="inspector-section">
             <div class="inspector-title">Aparência</div>
             <div class="prop-row"><span class="prop-label" style="width:52px">Cor</span><input type="color" class="prop-color-input" data-prop="fill" value="${layer.fill || '#cccccc'}"><input class="prop-input" data-prop="fill" value="${layer.fill || '#cccccc'}" style="flex:1;"></div>
@@ -3051,6 +3133,7 @@ async function loadDraftFromUrl(explicitId = null) {
         }
 
         docState.selection = [];
+        window.__draftLoaded = true; // suprime o banner de recuperação de sessão
         saveHistory("Rascunho carregado via MCP");
         render();
     } catch (err) {
@@ -4466,6 +4549,436 @@ workspace.addEventListener('touchend', endTouch, { passive: false });
 workspace.addEventListener('touchcancel', endTouch, { passive: false });
 
 // ═══════════════════════════════════════════════
+// PERSISTÊNCIA — autosave + salvar/abrir projeto
+// ═══════════════════════════════════════════════
+
+const AUTOSAVE_KEY = 'ilab_autosave_v1';
+let autosaveTimer = null;
+
+function setSaveIndicator(state) {
+    const el = document.getElementById('save-indicator');
+    if (!el) return;
+    el.classList.remove('saved', 'error');
+    if (state === 'pending') { el.textContent = 'salvando…'; }
+    else if (state === 'saved') {
+        const t = new Date();
+        el.textContent = `✓ salvo ${String(t.getHours()).padStart(2,'0')}:${String(t.getMinutes()).padStart(2,'0')}`;
+        el.classList.add('saved');
+    }
+    else if (state === 'partial') { el.textContent = '✓ salvo (sem fotos)'; el.classList.add('saved'); el.title = 'O navegador não tem espaço pras fotos — use "Salvar projeto" pra guardar tudo num arquivo.'; }
+    else if (state === 'error') { el.textContent = '⚠ não salvo'; el.classList.add('error'); el.title = 'Autosave falhou — use "Salvar projeto" pra não perder o trabalho.'; }
+}
+
+function scheduleAutosave() {
+    clearTimeout(autosaveTimer);
+    setSaveIndicator('pending');
+    autosaveTimer = setTimeout(doAutosave, 1500);
+}
+
+function buildProjectPayload() {
+    return { app: 'sanfran-ilab-editor', version: 1, savedAt: Date.now(), idCounter, artboards: docState.artboards };
+}
+
+function doAutosave() {
+    autosaveTimer = null;
+    const payload = buildProjectPayload();
+    // Documento pristino (1 artboard vazia) não merece autosave — e sobrescreveria
+    // a sessão anterior antes do usuário decidir no banner de recuperação.
+    const totalLayers = payload.artboards.reduce((n, ab) => n + (ab.layers ? ab.layers.length : 0), 0);
+    if (totalLayers === 0 && payload.artboards.length <= 1) {
+        const el = document.getElementById('save-indicator');
+        if (el) { el.textContent = ''; el.classList.remove('saved', 'error'); }
+        return;
+    }
+    try {
+        localStorage.setItem(AUTOSAVE_KEY, JSON.stringify(payload));
+        setSaveIndicator('saved');
+    } catch (err) {
+        // Cota do localStorage estourada (fotos em dataURL pesam) — degrada:
+        // salva a estrutura sem os dataURLs grandes e avisa no indicador.
+        try {
+            const slim = JSON.parse(JSON.stringify(payload));
+            const strip = (layers) => {
+                for (const l of layers) {
+                    if (typeof l.content === 'string' && l.content.startsWith('data:') && l.content.length > 80000) {
+                        l.content = ''; l._autosaveDropped = true;
+                    }
+                    if (l.children) strip(l.children);
+                }
+            };
+            slim.artboards.forEach(ab => strip(ab.layers));
+            localStorage.setItem(AUTOSAVE_KEY, JSON.stringify(slim));
+            setSaveIndicator('partial');
+        } catch (err2) {
+            setSaveIndicator('error');
+        }
+    }
+}
+
+// Recalcula o idCounter a partir dos ids existentes ('el-N') — evita colisão
+// de id ao restaurar um projeto salvo em outra sessão.
+function rebaseIdCounter(artboards) {
+    let max = idCounter;
+    const scan = (layers) => {
+        for (const l of layers) {
+            const m = /^el-(\d+)$/.exec(l.id || '');
+            if (m) max = Math.max(max, parseInt(m[1], 10) + 1);
+            if (l.children) scan(l.children);
+        }
+    };
+    for (const ab of artboards) {
+        const m = /^el-(\d+)$/.exec(ab.id || '');
+        if (m) max = Math.max(max, parseInt(m[1], 10) + 1);
+        scan(ab.layers || []);
+    }
+    idCounter = max;
+}
+
+function restoreProject(payload, actionName) {
+    if (!payload || !Array.isArray(payload.artboards) || payload.artboards.length === 0) {
+        throw new Error('Arquivo de projeto inválido (sem artboards).');
+    }
+    docState.artboards = JSON.parse(JSON.stringify(payload.artboards));
+    docState.selection = [];
+    rebaseIdCounter(docState.artboards);
+    if (typeof payload.idCounter === 'number') idCounter = Math.max(idCounter, payload.idCounter);
+    UIState.activeArtboardId = docState.artboards[0].id;
+    saveHistory(actionName || 'Projeto restaurado');
+    render();
+    centerOnActiveArtboard();
+}
+
+function offerSessionRecovery() {
+    if (window.__draftLoaded) return; // rascunho vindo do MCP tem prioridade
+    let payload = null;
+    try { payload = JSON.parse(localStorage.getItem(AUTOSAVE_KEY) || 'null'); } catch { return; }
+    if (!payload || !Array.isArray(payload.artboards)) return;
+    const totalLayers = payload.artboards.reduce((n, ab) => n + (ab.layers ? ab.layers.length : 0), 0);
+    if (totalLayers === 0 && payload.artboards.length <= 1) return; // nada relevante pra recuperar
+
+    const when = payload.savedAt ? new Date(payload.savedAt).toLocaleString('pt-BR') : '';
+    const banner = document.createElement('div');
+    banner.id = 'recovery-banner';
+    banner.innerHTML = `<span>Sessão anterior encontrada${when ? ' (' + when + ')' : ''} — recuperar?</span>
+        <button class="primary" id="recovery-yes">Recuperar</button>
+        <button id="recovery-no">Descartar</button>`;
+    document.body.appendChild(banner);
+    document.getElementById('recovery-yes').addEventListener('click', () => {
+        try { restoreProject(payload, 'Sessão recuperada'); }
+        catch (err) { alert('Falha ao recuperar: ' + err.message); }
+        banner.remove();
+    });
+    document.getElementById('recovery-no').addEventListener('click', () => {
+        localStorage.removeItem(AUTOSAVE_KEY);
+        banner.remove();
+    });
+}
+
+// Salvar projeto → download .json
+document.getElementById('btn-save-project').addEventListener('click', () => {
+    const payload = buildProjectPayload();
+    const blob = new Blob([JSON.stringify(payload)], { type: 'application/json' });
+    const a = document.createElement('a');
+    const t = new Date();
+    const stamp = `${t.getFullYear()}${String(t.getMonth()+1).padStart(2,'0')}${String(t.getDate()).padStart(2,'0')}-${String(t.getHours()).padStart(2,'0')}${String(t.getMinutes()).padStart(2,'0')}`;
+    a.href = URL.createObjectURL(blob);
+    a.download = `ilab-projeto-${stamp}.json`;
+    a.click();
+    URL.revokeObjectURL(a.href);
+});
+
+// Abrir projeto ← arquivo .json
+document.getElementById('btn-open-project').addEventListener('click', () => {
+    document.getElementById('project-file-input').click();
+});
+document.getElementById('project-file-input').addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+        try {
+            const payload = JSON.parse(ev.target.result);
+            const hasWork = docState.artboards.some(ab => ab.layers.length > 0);
+            if (hasWork && !confirm('Abrir este projeto vai substituir o trabalho atual. Continuar?')) return;
+            restoreProject(payload, 'Projeto aberto: ' + file.name);
+        } catch (err) {
+            alert('Não consegui abrir este arquivo: ' + err.message);
+        }
+    };
+    reader.readAsText(file);
+    e.target.value = '';
+});
+
+// Flush síncrono ao sair/esconder a aba — localStorage é síncrono, então dá
+// pra garantir o save sem incomodar o usuário com diálogo de confirmação.
+window.addEventListener('beforeunload', () => { if (autosaveTimer) { clearTimeout(autosaveTimer); doAutosave(); } });
+document.addEventListener('visibilitychange', () => { if (document.hidden && autosaveTimer) { clearTimeout(autosaveTimer); doAutosave(); } });
+
+// ═══════════════════════════════════════════════
+// IMPORTAR DESIGN VETORIZADO — OCR + trace em camadas
+// ═══════════════════════════════════════════════
+
+const CDN_IMAGETRACER = 'https://cdn.jsdelivr.net/npm/imagetracerjs@1.2.6/imagetracer_v1.2.6.js';
+const CDN_TESSERACT = 'https://cdn.jsdelivr.net/npm/tesseract.js@4/dist/tesseract.min.js';
+
+const _scriptCache = {};
+function loadScriptOnce(src) {
+    if (_scriptCache[src]) return _scriptCache[src];
+    _scriptCache[src] = new Promise((resolve, reject) => {
+        const s = document.createElement('script');
+        s.src = src;
+        s.onload = resolve;
+        s.onerror = () => { delete _scriptCache[src]; reject(new Error('Sem conexão com a biblioteca de vetorização (CDN). Use "Manter como foto".')); };
+        document.head.appendChild(s);
+    });
+    return _scriptCache[src];
+}
+
+const vecState = { dataUrl: null, fileName: '' };
+
+function vecStatus(msg) { document.getElementById('vec-status').textContent = msg || ''; }
+function vecBusy(busy) {
+    document.getElementById('vec-go').disabled = busy;
+    document.getElementById('vec-as-photo').disabled = busy;
+}
+
+document.getElementById('vectorize-upload').addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+        vecState.dataUrl = ev.target.result;
+        vecState.fileName = file.name;
+        document.getElementById('vec-preview').src = vecState.dataUrl;
+        vecStatus('');
+        vecBusy(false);
+        document.getElementById('vectorize-modal').classList.add('visible');
+    };
+    reader.readAsDataURL(file);
+    e.target.value = '';
+});
+
+document.getElementById('vec-close').addEventListener('click', () => {
+    document.getElementById('vectorize-modal').classList.remove('visible');
+});
+document.getElementById('vec-colors').addEventListener('input', (e) => {
+    document.getElementById('vec-colors-val').textContent = e.target.value;
+});
+
+// "Manter como foto" — fluxo raster tradicional, sem análise
+document.getElementById('vec-as-photo').addEventListener('click', () => {
+    const img = new Image();
+    img.onload = () => {
+        const ab = getActiveArtboard();
+        const maxW = Math.min(img.width, ab.width);
+        const w = maxW, h = Math.round(maxW * img.height / img.width);
+        ab.layers.push({
+            id: newId(), type: 'image', content: vecState.dataUrl,
+            x: Math.round((ab.width - w) / 2), y: Math.round((ab.height - h) / 2),
+            width: w, height: h, name: vecState.fileName, opacity: 1, rotation: 0
+        });
+        docState.selection = [];
+        saveHistory('Foto importada');
+        render();
+        document.getElementById('vectorize-modal').classList.remove('visible');
+    };
+    img.src = vecState.dataUrl;
+});
+
+// ── Helpers de análise de pixel ──
+function colorDist(a, b) {
+    return Math.sqrt((a.r - b.r) ** 2 + (a.g - b.g) ** 2 + (a.b - b.b) ** 2);
+}
+function rgbToHex(c) {
+    return '#' + [c.r, c.g, c.b].map(v => Math.max(0, Math.min(255, Math.round(v))).toString(16).padStart(2, '0')).join('');
+}
+function avgColorAt(ctx, x, y, size, w, h) {
+    const sx = Math.max(0, Math.min(w - size, x)), sy = Math.max(0, Math.min(h - size, y));
+    const d = ctx.getImageData(sx, sy, size, size).data;
+    let r = 0, g = 0, b = 0, n = d.length / 4;
+    for (let i = 0; i < d.length; i += 4) { r += d[i]; g += d[i + 1]; b += d[i + 2]; }
+    return { r: r / n, g: g / n, b: b / n };
+}
+
+// Fundo dominante: os 4 cantos concordam em cor → vira camada rect editável.
+function detectBackground(ctx, w, h) {
+    const s = 6;
+    const corners = [avgColorAt(ctx, 0, 0, s, w, h), avgColorAt(ctx, w - s, 0, s, w, h),
+                     avgColorAt(ctx, 0, h - s, s, w, h), avgColorAt(ctx, w - s, h - s, s, w, h)];
+    for (let i = 0; i < 4; i++) for (let j = i + 1; j < 4; j++) {
+        if (colorDist(corners[i], corners[j]) > 30) return null;
+    }
+    return {
+        r: corners.reduce((n, c) => n + c.r, 0) / 4,
+        g: corners.reduce((n, c) => n + c.g, 0) / 4,
+        b: corners.reduce((n, c) => n + c.b, 0) / 4
+    };
+}
+
+// Cor do texto: histograma dos pixels do bbox mais distantes do fundo local.
+function sampleTextColor(ctx, bb, w, h) {
+    const x0 = Math.max(0, bb.x0), y0 = Math.max(0, bb.y0);
+    const bw = Math.min(w - x0, bb.x1 - bb.x0), bh = Math.min(h - y0, bb.y1 - bb.y0);
+    if (bw < 2 || bh < 2) return '#1A1A1A';
+    const bg = avgColorAt(ctx, x0 - 8, y0 - 8, 6, w, h);
+    const d = ctx.getImageData(x0, y0, bw, bh).data;
+    const hist = {};
+    for (let i = 0; i < d.length; i += 4) {
+        const c = { r: d[i], g: d[i + 1], b: d[i + 2] };
+        if (colorDist(c, bg) < 70) continue; // pixel de fundo
+        const key = ((c.r >> 4) << 8) | ((c.g >> 4) << 4) | (c.b >> 4);
+        if (!hist[key]) hist[key] = { n: 0, r: 0, g: 0, b: 0 };
+        hist[key].n++; hist[key].r += c.r; hist[key].g += c.g; hist[key].b += c.b;
+    }
+    let best = null;
+    for (const k in hist) if (!best || hist[k].n > best.n) best = hist[k];
+    if (!best || best.n < 8) return '#1A1A1A';
+    return rgbToHex({ r: best.r / best.n, g: best.g / best.n, b: best.b / best.n });
+}
+
+// Apaga a região de texto pintando com a cor de fundo local — senão o texto
+// viraria path duplicado na vetorização.
+function eraseRegion(ctx, bb, w, h) {
+    const bg = avgColorAt(ctx, bb.x0 - 8, bb.y0 - 8, 6, w, h);
+    ctx.fillStyle = rgbToHex(bg);
+    ctx.fillRect(bb.x0 - 2, bb.y0 - 2, (bb.x1 - bb.x0) + 4, (bb.y1 - bb.y0) + 4);
+}
+
+async function runVectorizeImport() {
+    const numColors = parseInt(document.getElementById('vec-colors').value, 10);
+    const useOcr = document.getElementById('vec-ocr').checked;
+    vecBusy(true);
+    try {
+        const img = await new Promise((res, rej) => {
+            const i = new Image();
+            i.onload = () => res(i);
+            i.onerror = () => rej(new Error('Não consegui ler a imagem.'));
+            i.src = vecState.dataUrl;
+        });
+
+        // Análise em resolução limitada (performance); camadas ficam na escala original.
+        const MAX_ANALYSIS = 1600;
+        const scale = Math.min(1, MAX_ANALYSIS / Math.max(img.width, img.height));
+        const aw = Math.round(img.width * scale), ah = Math.round(img.height * scale);
+        const canvas = document.createElement('canvas');
+        canvas.width = aw; canvas.height = ah;
+        const ctx = canvas.getContext('2d', { willReadFrequently: true });
+        ctx.drawImage(img, 0, 0, aw, ah);
+        const inv = 1 / scale;
+
+        // 1) OCR → camadas de texto reais e editáveis
+        const textLayers = [];
+        if (useOcr) {
+            vecStatus('Lendo textos (OCR — 1ª vez baixa o modelo, ~11MB)…');
+            await loadScriptOnce(CDN_TESSERACT);
+            // PSM 11 (SPARSE_TEXT): designs têm texto esparso, não parágrafos —
+            // o modo padrão de página perde linhas isoladas (testado: perdia 28px).
+            const worker = await Tesseract.createWorker();
+            await worker.loadLanguage('por');
+            await worker.initialize('por');
+            await worker.setParameters({ tessedit_pageseg_mode: '11' });
+            const res = await worker.recognize(canvas);
+            await worker.terminate();
+            for (const line of (res.data.lines || [])) {
+                if ((line.confidence || 0) < 55) continue;
+                const txt = (line.text || '').trim();
+                if (!txt || txt.length < 2) continue;
+                const bb = line.bbox;
+                const bw = bb.x1 - bb.x0, bh = bb.y1 - bb.y0;
+                if (bh < 8 || bw < 14) continue;
+                const fill = sampleTextColor(ctx, bb, aw, ah);
+                // O bbox do OCR mede a altura dos glifos, não o corpo da fonte:
+                // CAIXA ALTA sem descendentes ocupa ~72% do corpo (fator 1.32);
+                // texto com descendentes (g/j/p/q/y) ocupa ~110% (fator 0.92).
+                const hasDescender = /[gjpqy]/.test(txt);
+                const isAllCaps = txt === txt.toUpperCase() && /[A-ZÀ-Ú]/.test(txt);
+                const bodyFactor = (isAllCaps && !hasDescender) ? 1.32 : (hasDescender ? 0.92 : 1.1);
+                const fontSize = Math.max(10, Math.round(bh * inv * bodyFactor));
+                textLayers.push({
+                    id: newId(), type: 'text', name: 'Texto: ' + txt.slice(0, 18),
+                    content: txt,
+                    x: Math.round(bb.x0 * inv), y: Math.round(bb.y0 * inv),
+                    width: Math.ceil(bw * inv * 1.06) + 10, height: Math.ceil(bh * inv * 1.35),
+                    // Fonte exata não é identificável por imagem — mapeia pra fonte da
+                    // marca mais próxima por tamanho (display grande / body pequena).
+                    fontFamily: fontSize >= 42 ? 'Poppins' : 'Montserrat',
+                    fontWeight: fontSize >= 42 ? 800 : 600,
+                    fontSize, fill, lineHeight: 1.15, textAlign: 'left',
+                    opacity: 1, rotation: 0
+                });
+                eraseRegion(ctx, bb, aw, ah);
+            }
+        }
+
+        // 2) Vetorização — uma camada SVG por cor
+        vecStatus('Vetorizando formas…');
+        await loadScriptOnce(CDN_IMAGETRACER);
+        const imgd = ctx.getImageData(0, 0, aw, ah);
+        const traceOpts = {
+            numberofcolors: numColors, colorsampling: 2,
+            ltres: 1, qtres: 1, pathomit: 8, blurradius: 0,
+            strokewidth: 0, linefilter: false, viewbox: true, desc: false
+        };
+        const td = ImageTracer.imagedataToTracedata(imgd, traceOpts);
+
+        const bg = detectBackground(ctx, aw, ah);
+        const svgLayers = [];
+        for (let i = 0; i < td.layers.length; i++) {
+            const paths = td.layers[i];
+            if (!paths || paths.length === 0) continue;
+            const pal = td.palette[i];
+            if (pal.a < 32) continue; // cor praticamente transparente
+            if (bg && colorDist(pal, bg) < 24) continue; // vira o rect de fundo
+            const single = { layers: [paths], palette: [{ r: pal.r, g: pal.g, b: pal.b, a: 255 }], width: td.width, height: td.height };
+            let svgStr = ImageTracer.getsvgstring(single, traceOpts);
+            if (!svgStr.includes('<path')) continue;
+            const hex = rgbToHex(pal);
+            // currentColor → cor trocável pelo inspetor via layer.fill (svgMono)
+            svgStr = svgStr.replace(/(fill|stroke)="rgb\([^"]*\)"/g, '$1="currentColor"');
+            svgLayers.push({
+                id: newId(), type: 'svg', svgMono: true, name: 'Vetor ' + hex,
+                content: svgStr, fill: hex,
+                x: 0, y: 0, width: img.width, height: img.height,
+                opacity: 1, rotation: 0
+            });
+        }
+
+        // 3) Monta a artboard nova: fundo → vetores → textos
+        const layers = [];
+        if (bg) {
+            layers.push({
+                id: newId(), type: 'rect', name: 'Fundo', fill: rgbToHex(bg),
+                x: 0, y: 0, width: img.width, height: img.height, opacity: 1, rotation: 0
+            });
+        }
+        layers.push(...svgLayers, ...textLayers);
+        if (layers.length === 0) throw new Error('Nenhum elemento identificado na imagem.');
+
+        const last = docState.artboards[docState.artboards.length - 1];
+        const ab = {
+            id: newId(), name: 'Design importado',
+            x: last.x + last.width + 100, y: last.y,
+            width: img.width, height: img.height, layers
+        };
+        docState.artboards.push(ab);
+        UIState.activeArtboardId = ab.id;
+        docState.selection = [];
+        saveHistory('Design importado (vetorizado)');
+        render();
+        centerOnActiveArtboard();
+        document.getElementById('vectorize-modal').classList.remove('visible');
+        vecStatus('');
+    } catch (err) {
+        console.warn('[Vectorize]', err);
+        vecStatus('⚠ ' + err.message);
+    } finally {
+        vecBusy(false);
+    }
+}
+
+document.getElementById('vec-go').addEventListener('click', runVectorizeImport);
+
+// ═══════════════════════════════════════════════
 // INIT
 // ═══════════════════════════════════════════════
 
@@ -4479,6 +4992,7 @@ workspace.addEventListener('touchcancel', endTouch, { passive: false });
     await loadDraftFromUrl();
     loadOldDrafts();
     centerOnActiveArtboard();
+    offerSessionRecovery();
     
     // Re-render rulers on resize
     window.addEventListener('resize', () => renderRulers());
