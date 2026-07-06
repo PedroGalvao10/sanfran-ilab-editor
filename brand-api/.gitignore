@@ -6,3 +6,5 @@ node_modules
 test/test-render-*.png
 test/*.png
 data/drafts/*.json
+
+.vercel

@@ -9,10 +9,15 @@
 import { randomBytes } from 'crypto';
 import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync, unlinkSync, statSync } from 'fs';
 import path from 'path';
+import os from 'os';
 import { fileURLToPath } from 'url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const DRAFTS_DIR = path.resolve(__dirname, '../../data/drafts');
+// Em serverless (Vercel/Lambda) o bundle é somente-leitura — só /tmp é gravável.
+// Local/Railway seguem usando a pasta do projeto (mais fácil de inspecionar em dev).
+const DRAFTS_DIR = process.env.VERCEL
+  ? path.join(os.tmpdir(), 'ilab-drafts')
+  : path.resolve(__dirname, '../../data/drafts');
 const TTL_MS = 24 * 60 * 60 * 1000;
 const ID_PATTERN = /^[a-f0-9]{12}$/; // formato exato gerado por saveDraft — qualquer coisa fora disso é rejeitada
 
