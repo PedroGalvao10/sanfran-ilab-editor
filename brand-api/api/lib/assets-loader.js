@@ -1,5 +1,8 @@
 import fs from 'fs';
 import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const ALLOWED_CATEGORIES = new Set([
   'lex',
@@ -11,9 +14,23 @@ const ALLOWED_CATEGORIES = new Set([
   'templates'
 ]);
 
+// Em serverless (Vercel), o backend é implantado como projeto próprio SEM a
+// pasta `assets/` (que vive um nível acima, fora do que é enviado) — o scan de
+// disco abaixo sempre falharia lá. Fallback: catálogo pré-computado localmente
+// (script de geração: rodar listAssets() com o filesystem real disponível e
+// salvar aqui), com URLs absolutas apontando pro host que REALMENTE serve os
+// arquivos (o brandbook estático). Regenerar sempre que assets/ mudar.
+const STATIC_CATALOG_PATH = path.join(__dirname, 'assets-catalog.json');
+
 export function listAssets(baseUrl = '') {
   const assetsDir = path.resolve(process.cwd(), '../assets');
-  if (!fs.existsSync(assetsDir)) return { error: 'Assets folder not found' };
+  if (!fs.existsSync(assetsDir)) {
+    if (fs.existsSync(STATIC_CATALOG_PATH)) {
+      try { return JSON.parse(fs.readFileSync(STATIC_CATALOG_PATH, 'utf-8')); }
+      catch { return { error: 'Assets folder not found (catálogo estático corrompido)' }; }
+    }
+    return { error: 'Assets folder not found' };
+  }
 
   const catalog = {};
   

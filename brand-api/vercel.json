@@ -5,7 +5,7 @@
       "src": "api/server.js",
       "use": "@vercel/node",
       "config": {
-        "includeFiles": ["brand.json"]
+        "includeFiles": ["brand.json", "api/lib/assets-catalog.json"]
       }
     }
   ],

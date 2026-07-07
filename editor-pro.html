@@ -2623,6 +2623,15 @@ function renderAssetsPanel(data) {
     const container = document.getElementById('assets-container');
     container.innerHTML = '';
 
+    // A API pode responder 200 com um payload de erro (ex: pasta de assets
+    // ausente no ambiente serverless) em vez de um catálogo de categorias —
+    // sem essa checagem, o código abaixo tentava iterar a MENSAGEM DE ERRO
+    // como se fosse um array de assets (cada caractere virava um "asset").
+    if (!data || typeof data !== 'object' || Array.isArray(data) || data.error) {
+        container.innerHTML = `<p style="text-align:center;color:var(--text-muted);font-size:11px;padding:20px;">Catálogo de assets indisponível${data && data.error ? ' — use Upload' : ''}.</p>`;
+        return;
+    }
+
     // Render Logos Section explicitly first
     if (data['root'] && data['root'].length) {
         const logoLabel = document.createElement('div');
